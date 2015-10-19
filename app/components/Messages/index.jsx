@@ -12,6 +12,7 @@ export default class Messages extends React.Component {
     local: PropTypes.instanceOf(Map).isRequired,
     docked: PropTypes.bool.isRequired,
     sendEditedMessage: PropTypes.func.isRequired,
+    typing: PropTypes.instanceOf(List).isRequired,
   }
 
 
@@ -30,6 +31,7 @@ export default class Messages extends React.Component {
   shouldComponentUpdate(nextProps, nextState) {
     return !(
       Immutable.is(nextProps.messages, this.props.messages) &&
+      Immutable.is(nextProps.typing, this.props.typing) &&
       Immutable.is(nextProps.local, this.props.local) &&
         nextProps.docked === this.props.docked &&
         nextState.listBottom === this.state.listBottom
@@ -54,7 +56,7 @@ export default class Messages extends React.Component {
 
 
   render() {
-    const {messages, local, sendEditedMessage} = this.props;
+    const {messages, local, sendEditedMessage, typing} = this.props;
     return (
       <div
         className='messages'
@@ -68,6 +70,7 @@ export default class Messages extends React.Component {
           local={local}
           sendEditedMessage={sendEditedMessage}
         />
+        <div className='messages__typing'>{'HL'}{typing.map(item => item.toString())}</div>
         <MessageComposer
           {...this.props}
           local={local}

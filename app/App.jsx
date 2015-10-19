@@ -13,12 +13,14 @@ import {bindActionCreators} from 'redux';
 import * as actionsChannels from 'actions/channels';
 import * as actionsMessages from 'actions/messages';
 import * as actionsLocal from 'actions/local';
+import * as actionsTyping from 'actions/typing';
 import {messageFilterSelector} from 'selectors/messagesSelector';
 import {contactsSelector} from 'selectors/contactsSelector';
 import DocumentTitle from 'react-document-title';
 import {localSelector} from 'selectors/localSelector';
 import {indirectChannelsSelector} from 'selectors/channelsSelector';
 import {directChannelsSelector} from 'selectors/directChannelsSelector';
+import {typingUserSelector} from 'selectors/typingSelector';
 
 @connect(state => ({
   messages: messageFilterSelector(state),
@@ -28,6 +30,7 @@ import {directChannelsSelector} from 'selectors/directChannelsSelector';
   contacts: contactsSelector(state),
   indirectChannels: indirectChannelsSelector(state),
   directChannels: directChannelsSelector(state),
+  typing: typingUserSelector(state),
 }))
 export default class Application extends React.Component {
   static propTypes = {
@@ -35,6 +38,7 @@ export default class Application extends React.Component {
     channels: PropTypes.instanceOf(List).isRequired,
     users: PropTypes.instanceOf(List).isRequired,
     contacts: PropTypes.instanceOf(List).isRequired,
+    typing: PropTypes.instanceOf(List).isRequired,
     local: PropTypes.instanceOf(Map).isRequired,
     dispatch: PropTypes.func.isRequired,
     children: PropTypes.node,
@@ -83,8 +87,8 @@ export default class Application extends React.Component {
 
 
   render() {
-    const {messages, channels, local, dispatch, contacts, indirectChannels, directChannels} = this.props;
-    const actionsCombine = Object.assign(actionsMessages, actionsLocal, actionsChannels);
+    const {messages, channels, local, dispatch, contacts, indirectChannels, directChannels, typing} = this.props;
+    const actionsCombine = Object.assign(actionsMessages, actionsLocal, actionsChannels, actionsTyping);
     const actions = bindActionCreators(actionsCombine, dispatch);
     const threads = (
       <Threads
@@ -118,6 +122,7 @@ export default class Application extends React.Component {
               docked={this.state.sidebarDocked}
               messages={messages}
               local={local}
+              typing={typing}
               {...actions}
             />
           </Sidebar>

@@ -9,6 +9,7 @@ export default class MessageComposer extends React.Component {
   static propTypes = {
     local: PropTypes.instanceOf(Map).isRequired,
     newMessage: PropTypes.func.isRequired,
+    startTyping: PropTypes.func.isRequired,
     changeBottom: PropTypes.func.isRequired,
   }
 
@@ -29,6 +30,11 @@ export default class MessageComposer extends React.Component {
   }
 
   textChange = (e) => {
+    console.log('composer typing', this.props);
+    this.props.startTyping({
+      channelId: this.props.local.get('currentChannelId'),
+      senderId: this.props.local.get('userId'),
+    });
     if (e.target.value.length === this.messageMaxLength) {
       this.setState({
         text: e.target.value,

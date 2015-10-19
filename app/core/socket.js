@@ -1,8 +1,9 @@
 import io from 'socket.io-client';
 import store from '../store';
 import {Map} from 'immutable';
-import {addChannel, addUserToChannel} from '../actions/channels';
 import {addMessage, loadChannelHistory, setEditedMessage} from '../actions/messages';
+import {addChannel, addUserToChannel} from '../actions/channels';
+import {setTyping} from '../actions/typing';
 import {setUserInfo, joinUser} from 'actions/users';
 import {init, initUser, logOut} from '../actions/local';
 import {SC} from '../../constants';
@@ -43,6 +44,11 @@ export function socketClient(type = null, socketData = null) {
 
     socket.on(SC.JOIN_TO_CHANNEL, (data) => {
       store.dispatch(addUserToChannel(data));
+    });
+
+    socket.on(SC.TYPING, (data) => {
+      console.log('typing socket', data);
+      store.dispatch(setTyping(data));
     });
 
 

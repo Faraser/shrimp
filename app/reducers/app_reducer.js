@@ -5,6 +5,7 @@ import {messages} from './messages';
 import {users} from './users';
 import {local} from './local';
 import {messagesFilterValue} from './messages_filter';
+import {typing} from './typing';
 
 export const appReducer = combineReducers({
   router: routerStateReducer,
@@ -13,4 +14,5 @@ export const appReducer = combineReducers({
   users,
   local,
   messagesFilterValue,
+  typing,
 });
