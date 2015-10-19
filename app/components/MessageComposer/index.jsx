@@ -2,7 +2,9 @@ import React, {PropTypes} from 'react';
 import Immutable, {Map} from 'immutable';
 import cx from 'classnames';
 import Textarea from 'react-textarea-autosize';
+import throttle from 'lodash.throttle';
 import './styles.scss';
+
 
 export default class MessageComposer extends React.Component {
 
@@ -17,6 +19,7 @@ export default class MessageComposer extends React.Component {
   constructor(props) {
     super(props);
     this.messageMaxLength = 220;
+    this.startTyping = throttle(this.props.startTyping, 2000);
     this.state = {
       text: '',
     };
@@ -31,7 +34,7 @@ export default class MessageComposer extends React.Component {
 
   textChange = (e) => {
     console.log('composer typing', this.props);
-    this.props.startTyping({
+    this.startTyping({
       channelId: this.props.local.get('currentChannelId'),
       senderId: this.props.local.get('userId'),
     });
