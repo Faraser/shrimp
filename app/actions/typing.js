@@ -14,3 +14,10 @@ export function setTyping(data) {
     payload: data,
   };
 }
+
+export function endTyping(data) {
+  return {
+    type: A.END_TYPING,
+    payload: data,
+  };
+}

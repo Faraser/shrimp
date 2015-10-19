@@ -3,6 +3,8 @@ import Immutable, {Map} from 'immutable';
 import cx from 'classnames';
 import Textarea from 'react-textarea-autosize';
 import throttle from 'lodash.throttle';
+import debounce from 'lodash.debounce';
+window.debounce = debounce;
 import './styles.scss';
 
 
