@@ -2,7 +2,7 @@ import {A, CS} from '../../constants.js';
 
 export function sendStartTyping(data) {
   return {
-    type: CS.TYPING,
+    type: CS.START_TYPING,
     payload: data,
     send: true,
   };
@@ -10,7 +10,7 @@ export function sendStartTyping(data) {
 
 export function setTyping(data) {
   return {
-    type: A.TYPING,
+    type: A.START_TYPING,
     payload: data,
   };
 }
@@ -18,6 +18,13 @@ export function setTyping(data) {
 export function deleteTyping(data) {
   return {
     type: A.END_TYPING,
+    payload: data,
+  };
+}
+
+export function hardDeleteTyping(data) {
+  return {
+    type: A.HARD_END_TYPING,
     payload: data,
   };
 }

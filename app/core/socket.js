@@ -3,7 +3,7 @@ import store from '../store';
 import {Map} from 'immutable';
 import {addMessage, loadChannelHistory, setEditedMessage} from '../actions/messages';
 import {addChannel, addUserToChannel} from '../actions/channels';
-import {setTyping, deleteTyping} from '../actions/typing';
+import {setTyping, deleteTyping, hardDeleteTyping} from '../actions/typing';
 import {setUserInfo, joinUser} from 'actions/users';
 import {init, initUser, logOut} from '../actions/local';
 import {SC} from '../../constants';
@@ -45,12 +45,16 @@ export function socketClient(type = null, socketData = null) {
       store.dispatch(addUserToChannel(data));
     });
 
-    socket.on(SC.TYPING, (data) => {
+    socket.on(SC.START_TYPING, (data) => {
       store.dispatch(setTyping(data));
     });
 
     socket.on(SC.END_TYPING, (data) => {
       store.dispatch(deleteTyping(data));
+    });
+
+    socket.on(SC.HARD_END_TYPING, (data) => {
+      store.dispatch(hardDeleteTyping(data));
     });
 
     socket.on(SC.CHANGE_USER_INFO, (data) => {

@@ -86,21 +86,20 @@ export default function startSocketServer(http) {
     });
 
 
-    socket.on(CS.TYPING, data => {
-      console.log('typing', data);
-      io.to(data.channelId).emit(SC.TYPING, {channelId: data.channelId, senderId: data.senderId});
+    socket.on(CS.START_TYPING, data => {
+      io.to(data.channelId).emit(SC.START_TYPING, {channelId: data.channelId, senderId: data.senderId});
     });
 
+
     socket.on(CS.END_TYPING, data => {
-      console.log('end typing', data);
       io.to(data.channelId).emit(SC.END_TYPING, {channelId: data.channelId, senderId: data.senderId});
     });
+
 
     socket.on('disconnect', () => {
       User.getBySessionId(socket.sessionId)
         .then((user) => {
-          console.log('disconnect', user.id);
-          io.sockets.emit(SC.END_TYPING, {senderId: user.id});
+          io.sockets.emit(SC.HARD_END_TYPING, {senderId: user.id});
         });
     });
 
