@@ -96,6 +96,14 @@ export default function startSocketServer(http) {
       io.to(data.channelId).emit(SC.END_TYPING, {channelId: data.channelId, senderId: data.senderId});
     });
 
+    socket.on('disconnect', () => {
+      User.getBySessionId(socket.sessionId)
+        .then((user) => {
+          console.log('disconnect', user.id);
+          io.sockets.emit(SC.END_TYPING, {senderId: user.id});
+        });
+    });
+
 
     socket.on(CS.SET_FAVORITE_CHANNEL, data => {
       setFavoriteChannel(socket.sessionId, data);
