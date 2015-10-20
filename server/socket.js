@@ -11,7 +11,6 @@ import {checkEditPermission} from './validation';
 const Message = getMessageModel();
 const Channel = getChannelModel();
 const User = getUserModel();
-import debounce from 'lodash.debounce';
 
 export default function startSocketServer(http) {
   const io = new Server(http);
@@ -90,11 +89,11 @@ export default function startSocketServer(http) {
     socket.on(CS.TYPING, data => {
       console.log('typing', data);
       io.to(data.channelId).emit(SC.TYPING, {channelId: data.channelId, senderId: data.senderId});
-      const foo = debounce(() => {
-        console.log('debounce, end typing');
-        io.to(data.channelId).emit(SC.END_TYPING, {channelId: data.channelId, senderId: data.senderId});
-      }, 3000);
-      foo();
+    });
+
+    socket.on(CS.END_TYPING, data => {
+      console.log('end typing', data);
+      io.to(data.channelId).emit(SC.END_TYPING, {channelId: data.channelId, senderId: data.senderId});
     });
 
 

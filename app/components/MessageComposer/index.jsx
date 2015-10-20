@@ -2,9 +2,7 @@ import React, {PropTypes} from 'react';
 import Immutable, {Map} from 'immutable';
 import cx from 'classnames';
 import Textarea from 'react-textarea-autosize';
-import throttle from 'lodash.throttle';
 import debounce from 'lodash.debounce';
-window.debounce = debounce;
 import './styles.scss';
 
 
@@ -13,7 +11,8 @@ export default class MessageComposer extends React.Component {
   static propTypes = {
     local: PropTypes.instanceOf(Map).isRequired,
     newMessage: PropTypes.func.isRequired,
-    startTyping: PropTypes.func.isRequired,
+    sendStartTyping: PropTypes.func.isRequired,
+    sendEndTyping: PropTypes.func.isRequired,
     changeBottom: PropTypes.func.isRequired,
   }
 
@@ -21,9 +20,13 @@ export default class MessageComposer extends React.Component {
   constructor(props) {
     super(props);
     this.messageMaxLength = 220;
-    this.startTyping = throttle(this.props.startTyping, 2000);
+    this.endTyping = debounce((data) => {
+      this.setState({typing: false});
+      this.props.sendEndTyping(data);
+    }, 2000);
     this.state = {
       text: '',
+      typing: false,
     };
   }
 
@@ -35,11 +38,12 @@ export default class MessageComposer extends React.Component {
   }
 
   textChange = (e) => {
-    console.log('composer typing', this.props);
-    this.startTyping({
+    this.startTyping();
+    this.endTyping({
       channelId: this.props.local.get('currentChannelId'),
       senderId: this.props.local.get('userId'),
     });
+
     if (e.target.value.length === this.messageMaxLength) {
       this.setState({
         text: e.target.value,
@@ -50,6 +54,16 @@ export default class MessageComposer extends React.Component {
       });
     }
   }
+
+  startTyping = () => {
+    if (!this.state.typing) {
+      this.props.sendStartTyping({
+        channelId: this.props.local.get('currentChannelId'),
+        senderId: this.props.local.get('userId'),
+      });
+      this.setState({typing: true});
+    }
+  };
 
 
   sendMessage = () => {

@@ -70,7 +70,7 @@ export default class Messages extends React.Component {
           local={local}
           sendEditedMessage={sendEditedMessage}
         />
-        <div className='messages__typing'>{'HL'}{typing.map(item => item.toString())}</div>
+        <div className='messages__typing'>{typing.map(item => item + ' is typing message')}</div>
         <MessageComposer
           {...this.props}
           local={local}

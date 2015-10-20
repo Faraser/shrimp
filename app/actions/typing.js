@@ -1,6 +1,6 @@
 import {A, CS} from '../../constants.js';
 
-export function startTyping(data) {
+export function sendStartTyping(data) {
   return {
     type: CS.TYPING,
     payload: data,
@@ -15,9 +15,17 @@ export function setTyping(data) {
   };
 }
 
-export function endTyping(data) {
+export function deleteTyping(data) {
   return {
     type: A.END_TYPING,
     payload: data,
+  };
+}
+
+export function sendEndTyping(data) {
+  return {
+    type: CS.END_TYPING,
+    payload: data,
+    send: true,
   };
 }
