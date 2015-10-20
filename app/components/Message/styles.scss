@@ -147,19 +147,13 @@
   &__editor {
     min-width: 200px;
     margin-bottom: 7px;
-    padding: 0;
-    padding-left: 2px;
+    padding: 2px 3px;
 
     resize: none;
 
     color: black;
     border: none;
     border-radius: 5px;
-
-    &:focus {
-      outline: #3c3b37 auto 5px;
-      outline-offset: -2px;
-    }
   }
 
   &__edit {
@@ -176,7 +170,7 @@
     cursor: pointer;
 
     &:hover {
-      color: red;
+      color: $c-main_bg;
     }
   }
 

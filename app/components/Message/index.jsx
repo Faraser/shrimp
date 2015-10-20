@@ -155,6 +155,7 @@ export default class Message extends React.Component {
               hidden={!this.state.isEdit}
               onKeyDown={this.editorKeyDown}
               onChange={this.editorChange}
+              onBlur={this.cancelEdit}
               className='message__editor'
               ref='editor'
               minRows={2}
