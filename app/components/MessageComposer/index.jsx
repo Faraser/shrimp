@@ -1,7 +1,8 @@
 import React, {PropTypes} from 'react';
-import Immutable, {Map} from 'immutable';
+import Immutable, {Map, List} from 'immutable';
 import cx from 'classnames';
 import Textarea from 'react-textarea-autosize';
+import Typing from 'components/Typing';
 import debounce from 'lodash.debounce';
 import './styles.scss';
 
@@ -10,6 +11,7 @@ export default class MessageComposer extends React.Component {
 
   static propTypes = {
     local: PropTypes.instanceOf(Map).isRequired,
+    typing: PropTypes.instanceOf(List).isRequired,
     newMessage: PropTypes.func.isRequired,
     sendStartTyping: PropTypes.func.isRequired,
     sendEndTyping: PropTypes.func.isRequired,
@@ -33,6 +35,7 @@ export default class MessageComposer extends React.Component {
   shouldComponentUpdate(nextProps, nextState) {
     return !(
       Immutable.is(nextProps.local, this.props.local) &&
+      Immutable.is(nextProps.typing, this.props.typing) &&
       Immutable.is(nextState.text, this.state.text)
     );
   }
@@ -90,11 +93,12 @@ export default class MessageComposer extends React.Component {
 
 
   render() {
-    const {changeBottom} = this.props;
+    const {changeBottom, typing} = this.props;
     const leftSymbols = this.messageMaxLength - this.state.text.length;
 
     return (
       <div className='composer'>
+        <Typing typing={typing} />
         <div className='composer__sender'>
           <Textarea
             value={this.state.text}

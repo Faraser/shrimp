@@ -1,0 +1,16 @@
+@import '~styles/variables.scss';
+
+.typing {
+  position: absolute;
+  top: -10px;
+
+  width: calc(100vw - 40px - #{$threads_width});
+  height: $typing_height;
+  margin: 0 20px;
+
+  font-size: 11px;
+
+  @media (max-width: $mobile_width) {
+    width: calc(100vw - 40px);
+  }
+}

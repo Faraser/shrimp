@@ -4,7 +4,6 @@ import MessageList from 'components/MessageList';
 import MessageComposer from 'components/MessageComposer';
 import './styles.scss';
 
-
 export default class Messages extends React.Component {
 
   static propTypes = {
@@ -70,10 +69,11 @@ export default class Messages extends React.Component {
           local={local}
           sendEditedMessage={sendEditedMessage}
         />
-        <div className='messages__typing'>{typing.map(item => item + ' is typing message')}</div>
+
         <MessageComposer
           {...this.props}
           local={local}
+          typing={typing}
           changeBottom={this.changeBottom}
         />
       </div>
