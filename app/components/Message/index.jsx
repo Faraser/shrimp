@@ -5,7 +5,7 @@ import './styles.scss';
 import moment from 'moment';
 import Linkify from 'react-linkify';
 import Textarea from 'react-textarea-autosize';
-
+import {M} from '../../../constants';
 export default class Message extends React.Component {
 
   static propTypes = {
@@ -23,7 +23,7 @@ export default class Message extends React.Component {
 
   constructor(props) {
     super(props);
-    this.messageMaxLength = 220;
+    this.messageMaxLength = M.MESSAGE_MAX_LENGTH;
     this.state = {
       date: null,
       isEdit: false,

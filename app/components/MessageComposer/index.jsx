@@ -4,6 +4,7 @@ import cx from 'classnames';
 import Textarea from 'react-textarea-autosize';
 import Typing from 'components/Typing';
 import debounce from 'lodash.debounce';
+import {M} from '../../../constants';
 import './styles.scss';
 
 
@@ -21,11 +22,11 @@ export default class MessageComposer extends React.Component {
 
   constructor(props) {
     super(props);
-    this.messageMaxLength = 220;
+    this.messageMaxLength = M.MESSAGE_MAX_LENGTH;
     this.endTyping = debounce((data) => {
       this.setState({typing: false});
       this.props.sendEndTyping(data);
-    }, 2000);
+    }, M.TYPING_DEBOUNCE);
     this.state = {
       text: '',
       typing: false,
@@ -41,11 +42,12 @@ export default class MessageComposer extends React.Component {
   }
 
   textChange = (e) => {
-    this.startTyping();
-    this.endTyping({
+    const data = {
       channelId: this.props.local.get('currentChannelId'),
       senderId: this.props.local.get('userId'),
-    });
+    };
+    this.startTyping(data);
+    this.endTyping(data);
 
     if (e.target.value.length === this.messageMaxLength) {
       this.setState({
@@ -58,12 +60,9 @@ export default class MessageComposer extends React.Component {
     }
   }
 
-  startTyping = () => {
+  startTyping = (data) => {
     if (!this.state.typing) {
-      this.props.sendStartTyping({
-        channelId: this.props.local.get('currentChannelId'),
-        senderId: this.props.local.get('userId'),
-      });
+      this.props.sendStartTyping(data);
       this.setState({typing: true});
     }
   };

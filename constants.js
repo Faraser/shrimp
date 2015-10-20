@@ -54,8 +54,14 @@ const A = {
   EDIT_MESSAGE: 'EDIT_MESSAGE',
 };
 
+const M = {
+  MESSAGE_MAX_LENGTH: 220,
+  TYPING_DEBOUNCE: 2000,
+};
+
 module.exports = {
   SC: SC,
   CS: CS,
   A: A,
+  M: M,
 };
