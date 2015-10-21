@@ -1,0 +1,23 @@
+@import '~styles/variables.scss';
+@import '~styles/mixins.scss';
+@import '~styles/colors.scss';
+
+.embedly {
+  max-width: 100%;
+  padding: 10px;
+
+  border-left: 10px solid white;
+  border-radius: 5px;
+  background: darken($c-message-cloud-default_bg, 3);
+
+  &_other {
+    background: darken($c-message-cloud-other_bg, 3);
+  }
+
+  &__image {
+    float: left;
+
+    width: 50%;
+    margin-right: 10px;
+  }
+}

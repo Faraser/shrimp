@@ -6,6 +6,8 @@ import moment from 'moment';
 import Linkify from 'react-linkify';
 import Textarea from 'react-textarea-autosize';
 import {M} from '../../../constants';
+import Embedly from 'components/Embedly';
+
 export default class Message extends React.Component {
 
   static propTypes = {
@@ -36,9 +38,9 @@ export default class Message extends React.Component {
 
   componentDidMount = () => {
     this.updateTime(this.props.timestamp);
-    this.timer = setInterval(()=>{
-      this.updateTime(this.props.timestamp);
-    }, 5000);
+    // this.timer = setInterval(()=> {
+    //  this.updateTime(this.props.timestamp);
+    // }, 5000);
   };
 
 
@@ -116,7 +118,7 @@ export default class Message extends React.Component {
         src={sender.get('avatar')}
         width='50'
         height='50'
-      />
+        />
     );
   };
 
@@ -128,7 +130,9 @@ export default class Message extends React.Component {
       if (isSelfMessage || senderRepeated) return null;
       const name = sender.get('name');
       return <div className='message__username'>{name}</div>;
-    }());
+    }()
+  )
+    ;
 
     return (
       <li className={cx('message', {
@@ -146,7 +150,7 @@ export default class Message extends React.Component {
           </div>
           <div className='message__text' ref='text'>
             <div hidden={this.state.isEdit}>
-              <Linkify properties={{className: 'message__url', target: '_blank'}}>
+              <Linkify component={Embedly} properties={{other: !isSelfMessage}}>
                 {text}
               </Linkify>
             </div>
@@ -161,24 +165,25 @@ export default class Message extends React.Component {
               minRows={2}
               maxRows={10}
               style={{width: this.state.editorWidth, height: this.state.editorHeight}}
-            />
+              />
           </div>
           <div
             className='message__save-btn'
             hidden={!this.state.isEdit}
             onClick={this.editEnd}
-          >{'enter to '}<u>{'save'}</u>{' changes'}</div>
+            >{'enter to '}<u>{'save'}</u>{' changes'}</div>
           <div
             className='message__cancel-btn'
             hidden={!this.state.isEdit}
             onClick={this.cancelEdit}
-          >{'esc to '}<u>{'cancel'}</u></div>
+            >{'esc to '}<u>{'cancel'}</u></div>
           <div
             className='message__date'
             hidden={this.state.isEdit}
-          >{edited ? 'edited ' + this.state.date + ' ago' : this.state.date + ' ago' }</div>
+            >{edited ? 'edited ' + this.state.date + ' ago' : this.state.date + ' ago' }</div>
         </div>
       </li>
     );
   }
 }
+

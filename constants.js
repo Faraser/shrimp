@@ -57,6 +57,7 @@ const A = {
 const M = {
   MESSAGE_MAX_LENGTH: 220,
   TYPING_DEBOUNCE: 2000,
+  API_KEY: '0ccb2018f041465fae7e0d65154b0399',
 };
 
 module.exports = {
