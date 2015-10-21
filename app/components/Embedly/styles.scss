@@ -14,10 +14,23 @@
     background: darken($c-message-cloud-other_bg, 3);
   }
 
+  &__title {
+    margin: 0;
+    padding: 0;
+  }
+
   &__image {
     float: left;
 
     width: 50%;
     margin-right: 10px;
+  }
+
+  &__descr {
+    @extend .clearfix;
+  }
+
+  &__link {
+    color: white;
   }
 }
