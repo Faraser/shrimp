@@ -20,6 +20,7 @@ export default class Message extends React.Component {
     senderRepeated: PropTypes.bool.isRequired,
     nextMessageIsMain: PropTypes.bool.isRequired,
     sendEditedMessage: PropTypes.func.isRequired,
+    addUrl: PropTypes.func.isRequired,
   };
 
 
@@ -38,9 +39,9 @@ export default class Message extends React.Component {
 
   componentDidMount = () => {
     this.updateTime(this.props.timestamp);
-    // this.timer = setInterval(()=> {
-    //  this.updateTime(this.props.timestamp);
-    // }, 5000);
+    this.timer = setInterval(()=> {
+      this.updateTime(this.props.timestamp);
+    }, 5000);
   };
 
 
@@ -124,7 +125,7 @@ export default class Message extends React.Component {
 
 
   render() {
-    const {sender, text, currentUserId, senderRepeated, nextMessageIsMain, edited} = this.props;
+    const {sender, text, currentUserId, senderRepeated, nextMessageIsMain, edited, addUrl} = this.props;
     const isSelfMessage = sender.get('id') === currentUserId;
     const userName = (() => {
       if (isSelfMessage || senderRepeated) return null;
@@ -150,7 +151,7 @@ export default class Message extends React.Component {
           </div>
           <div className='message__text' ref='text'>
             <div hidden={this.state.isEdit}>
-              <Linkify component={Embedly} properties={{other: !isSelfMessage}}>
+              <Linkify component={Embedly} properties={{other: !isSelfMessage, addUrl: addUrl}}>
                 {text}
               </Linkify>
             </div>
