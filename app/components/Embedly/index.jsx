@@ -3,7 +3,8 @@ import {List} from 'immutable';
 import cx from 'classnames';
 import './styles.scss';
 import {connect} from 'react-redux';
-
+import Linkify from 'linkify-it';
+window.link = new Linkify();
 
 @connect(state => ({
   urls: state.urls,
@@ -27,6 +28,7 @@ export default class Embedly extends React.Component {
     }
   };
 
+
   render = () => {
     const {urls, children, other} = this.props;
     const url = urls.find(item => item.get('url') === children);
@@ -40,6 +42,11 @@ export default class Embedly extends React.Component {
       );
     }
     const data = url.get('data');
+    if (data.type === 'photo') {
+      return (
+        <img src={data.url} className='embedly__image embedly__image_simple' />
+      );
+    }
     return (
       <div className={cx('embedly', {'embedly_other': other})}>
         <h3 className='embedly__title'>{data.title}</h3>

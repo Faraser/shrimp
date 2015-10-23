@@ -27,6 +27,13 @@
     margin-right: 10px;
   }
 
+  &__image_simple {
+    float: none;
+
+    width: 90%;
+  }
+
+
   &__descr {
     @extend .clearfix;
   }
