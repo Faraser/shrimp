@@ -9,6 +9,7 @@ import {createDefaultChannel} from './fill-db.js';
 import {signInUser, signUpUser, checkUserEmail, checkEmailExist, setSessionId} from './db/db_core.js';
 import getInitState from './initial-state';
 import {generateSessionId} from './lib/core.js';
+import multer from 'multer';
 // const debug = require('debug')('shrimp:server');
 
 const app = express();
@@ -19,6 +20,7 @@ const isDev = process.env.NODE_ENV === 'development';
 const env = process.env.NODE_ENV;
 const isDebug = process.env.DEBUG;
 const isMongoConnect = process.env.MONGO_CONNECT;
+
 
 if (isDev && isDebug && process.env.DEBUG.indexOf('shrimp:front') === 0) {
   const webpack = require('webpack');
@@ -36,6 +38,7 @@ if (isDev && isDebug && process.env.DEBUG.indexOf('shrimp:front') === 0) {
   }));
 
   app.use(require('webpack-hot-middleware')(compiler));
+  app.use('/static', express.static(path.join(__dirname, '../static')));
 } else {
   app.use('/static', express.static(path.join(__dirname, '../static')));
 }
@@ -91,6 +94,17 @@ app.post('/checkemailexist', (req, res) => {
   const email = req.body.email;
   checkEmailExist(email, (exist) => {
     res.json(exist);
+  });
+});
+
+const upload = multer({dest: 'static/images'});
+app.post('/upload', upload.array('images'), (req, res) => {
+  console.log('body', req.body);
+  console.log('files', req.files);
+  res.json({
+    status: 'success',
+    text: 'File uploaded successfully',
+    paths: req.files.map(file => file.path),
   });
 });
 

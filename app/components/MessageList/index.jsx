@@ -34,6 +34,7 @@ export default class MessageList extends React.Component {
     const messages = this.props.messages
       .map((message, i, arr) => {
         const sender = message.get('sender');
+        const images = message.get('images');
         const id = sender.get('id');
         const senderRepeated = id === prevId;
         prevId = id;
@@ -46,6 +47,7 @@ export default class MessageList extends React.Component {
           <Message
             key={i}
             sender={sender}
+            images={images}
             senderRepeated={senderRepeated}
             nextMessageIsMain={nextMessageIsMain}
             text={message.get('text')}

@@ -1,5 +1,5 @@
 import React, {PropTypes} from 'react';
-import {Map} from 'immutable';
+import {Map, List} from 'immutable';
 import cx from 'classnames';
 import './styles.scss';
 import moment from 'moment';
@@ -12,6 +12,7 @@ export default class Message extends React.Component {
 
   static propTypes = {
     sender: PropTypes.instanceOf(Map).isRequired,
+    images: PropTypes.instanceOf(List).isRequired,
     text: PropTypes.string.isRequired,
     timestamp: PropTypes.string.isRequired,
     edited: PropTypes.bool.isRequired,
@@ -38,10 +39,10 @@ export default class Message extends React.Component {
 
 
   componentDidMount = () => {
-    this.updateTime(this.props.timestamp);
-    this.timer = setInterval(()=> {
-      this.updateTime(this.props.timestamp);
-    }, 5000);
+    // this.updateTime(this.props.timestamp);
+    // this.timer = setInterval(()=> {
+    //  this.updateTime(this.props.timestamp);
+    // }, 5000);
   };
 
 
@@ -119,22 +120,19 @@ export default class Message extends React.Component {
         src={sender.get('avatar')}
         width='50'
         height='50'
-        />
+      />
     );
   };
 
 
   render() {
-    const {sender, text, currentUserId, senderRepeated, nextMessageIsMain, edited, addUrl} = this.props;
+    const {sender, text, currentUserId, senderRepeated, nextMessageIsMain, edited, addUrl, images} = this.props;
     const isSelfMessage = sender.get('id') === currentUserId;
     const userName = (() => {
       if (isSelfMessage || senderRepeated) return null;
       const name = sender.get('name');
       return <div className='message__username'>{name}</div>;
-    }()
-  )
-    ;
-
+    }());
     return (
       <li className={cx('message', {
         'message_repeated': senderRepeated,
@@ -154,6 +152,7 @@ export default class Message extends React.Component {
               <Linkify component={Embedly} properties={{other: !isSelfMessage, addUrl: addUrl}}>
                 {text}
               </Linkify>
+              {images.map((image, i) => <img src={image} className='embedly__image embedly__image_simple' key={i}/>)}
             </div>
             <Textarea
               value={this.state.editorValue}

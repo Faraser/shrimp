@@ -9,6 +9,7 @@ const message = new mongoose.Schema({
   text: String,
   timestamp: { type: Date, default: Date.now },
   edited: { type: Boolean, default: false },
+  images: [String],
 });
 
 message.statics.getAll = function getAll() {

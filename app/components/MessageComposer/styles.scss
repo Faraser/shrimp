@@ -59,6 +59,7 @@
 
     width: calc(100% - 63px);
     margin: 10px;
+    padding-right: 28px;
 
     resize: none;
 
@@ -84,7 +85,6 @@
     background: $c-blue;
 
     font-size: 12px;
-    font-size: 12px;
     line-height: 21px;
 
     &_error {
@@ -92,5 +92,31 @@
 
       background: $c-red;
     }
+  }
+
+  &__upload-button {
+    position: absolute;
+    right: 3px + 55px;
+    bottom: 10px;
+
+    width: 20px;
+    height: 20px;
+
+    cursor: pointer;
+
+    background: url('./clip.svg') no-repeat;
+    background-size: 15px;
+  }
+
+
+
+  &__preview {
+    margin-right: 80px;
+    padding: 0 5px;
+  }
+
+  &__preview-img {
+    max-height: 50px;
+    margin: 0 10px;
   }
 }

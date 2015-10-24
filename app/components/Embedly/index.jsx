@@ -3,8 +3,6 @@ import {List} from 'immutable';
 import cx from 'classnames';
 import './styles.scss';
 import {connect} from 'react-redux';
-import Linkify from 'linkify-it';
-window.link = new Linkify();
 
 @connect(state => ({
   urls: state.urls,

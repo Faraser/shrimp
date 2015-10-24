@@ -27,9 +27,7 @@ const uploadOembedDataMiddleware = (store) => next => action => {
   if (action.type === A.ADD_URL) {
     fetch(`http://api.embed.ly/1/oembed?url=${action.payload.url}&key=${M.API_KEY}`)
       .then(response => response.json())
-      .then(data => {
-        store.dispatch(updateUrl({url: action.payload.url, data: data}));
-      });
+      .then(data => store.dispatch(updateUrl({url: action.payload.url, data: data})));
   }
   return next(action);
 };
