@@ -1,6 +1,6 @@
 import React, {PropTypes} from 'react';
 import Immutable, {Map, List} from 'immutable';
-import ImagePreview from 'components/ImagePreview';
+import ImagePreviews from 'components/ImagePreviews';
 import Typing from 'components/Typing';
 import Textarea from 'react-textarea-autosize';
 import Dropzone from 'react-dropzone';
@@ -84,6 +84,7 @@ export default class MessageComposer extends React.Component {
     this.refs.dropzone.open();
   };
 
+
   removeFile = (index) => {
     this.setState({
       paths: this.state.paths.remove(index),
@@ -126,14 +127,18 @@ export default class MessageComposer extends React.Component {
     }
   };
 
+  changeBottom = () => {
+    const height = getComputedStyle(this.refs.composer).height;
+    this.props.changeBottom(height);
+  };
+
 
   render() {
-    const {changeBottom, typing} = this.props;
+    const {typing} = this.props;
     const leftSymbols = this.messageMaxLength - this.state.text.length;
 
     return (
-
-      <div className='composer'>
+      <div className='composer' ref='composer'>
         <Dropzone onDrop={this.onDrop} disableClick className='composer__dropzone' ref='dropzone'>
           <Typing typing={typing}/>
 
@@ -142,12 +147,12 @@ export default class MessageComposer extends React.Component {
               value={this.state.text}
               onKeyPress={this.textKeyPress}
               onChange={this.textChange}
-              onHeightChange={changeBottom}
+              onHeightChange={this.changeBottom}
               minRows={1}
               maxRows={5}
               maxLength={this.messageMaxLength}
               className='composer__textarea'
-              />
+            />
 
             <div className={cx('composer__info', {composer__info_error: leftSymbols <= 0})}>
               {leftSymbols}
@@ -164,15 +169,12 @@ export default class MessageComposer extends React.Component {
               className='composer__upload-button'
               >
             </div>
-
-            <div className='composer__preview'>
-              {this.state.files.map((file, i) => <ImagePreview
-                className='composer__preview-img'
-                src={file.preview}
-                index={i}
-                remove={this.removeFile}
-                key={i}/>)}
-            </div>
+            <ImagePreviews
+              className='composer__preview'
+              files={this.state.files}
+              remove={this.removeFile}
+              changeBottom={this.changeBottom}
+            />
           </div>
         </Dropzone>
       </div>

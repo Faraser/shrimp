@@ -12,7 +12,7 @@ export default class Messages extends React.Component {
     docked: PropTypes.bool.isRequired,
     sendEditedMessage: PropTypes.func.isRequired,
     typing: PropTypes.instanceOf(List).isRequired,
-  }
+  };
 
 
   constructor(props) {
@@ -22,10 +22,6 @@ export default class Messages extends React.Component {
     };
   }
 
-
-  componentDidMount = () => {
-    this.baseTextareaHeight = null;
-  }
 
   shouldComponentUpdate(nextProps, nextState) {
     return !(
@@ -37,21 +33,21 @@ export default class Messages extends React.Component {
     );
   }
 
-  scrollToBottom = () => {
-    const list = this.refs.list;
-    list.scrollTop = list.scrollHeight;
-  }
+
+  componentDidUpdate = () => {
+    this.scrollToBottom();
+  };
 
 
   changeBottom = (height) => {
-    if (this.baseTextareaHeight === null) {
-      this.baseTextareaHeight = height;
-    }
-    this.setState({
-      listBottom: height - this.baseTextareaHeight,
-    });
-    this.scrollToBottom();
-  }
+    this.setState({listBottom: height});
+  };
+
+
+  scrollToBottom = () => {
+    const list = this.refs.list;
+    list.scrollTop = list.scrollHeight;
+  };
 
 
   render() {
