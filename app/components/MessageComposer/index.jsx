@@ -1,11 +1,12 @@
 import React, {PropTypes} from 'react';
 import Immutable, {Map, List} from 'immutable';
-import cx from 'classnames';
-import Textarea from 'react-textarea-autosize';
+import ImagePreview from 'components/ImagePreview';
 import Typing from 'components/Typing';
+import Textarea from 'react-textarea-autosize';
+import Dropzone from 'react-dropzone';
+import cx from 'classnames';
 import debounce from 'lodash.debounce';
 import {M} from '../../../constants';
-import Dropzone from 'react-dropzone';
 import './styles.scss';
 
 export default class MessageComposer extends React.Component {
@@ -30,8 +31,8 @@ export default class MessageComposer extends React.Component {
     this.state = {
       text: '',
       typing: false,
-      paths: [],
-      files: [],
+      paths: List(),
+      files: List(),
     };
   }
 
@@ -62,7 +63,7 @@ export default class MessageComposer extends React.Component {
 
   sendMessage = () => {
     const text = this.state.text.trim();
-    if (text || this.state.files.length > 0) {
+    if (text || !this.state.files.isEmpty()) {
       this.props.newMessage({
         channelId: this.props.local.get('currentChannelId'),
         senderId: this.props.local.get('userId'),
@@ -71,8 +72,8 @@ export default class MessageComposer extends React.Component {
       });
       this.setState({
         text: '',
-        paths: [],
-        files: [],
+        paths: List(),
+        files: List(),
       });
     }
   };
@@ -81,6 +82,13 @@ export default class MessageComposer extends React.Component {
   openUpload = (e) => {
     e.preventDefault();
     this.refs.dropzone.open();
+  };
+
+  removeFile = (index) => {
+    this.setState({
+      paths: this.state.paths.remove(index),
+      files: this.state.files.remove(index),
+    });
   };
 
 
@@ -158,7 +166,12 @@ export default class MessageComposer extends React.Component {
             </div>
 
             <div className='composer__preview'>
-              {this.state.files.map((file, i) => <img className='composer__preview-img' src={file.preview} key={i}/>)}
+              {this.state.files.map((file, i) => <ImagePreview
+                className='composer__preview-img'
+                src={file.preview}
+                index={i}
+                remove={this.removeFile}
+                key={i}/>)}
             </div>
           </div>
         </Dropzone>

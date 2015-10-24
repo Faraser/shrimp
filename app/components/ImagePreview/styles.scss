@@ -1,0 +1,49 @@
+@import '~styles/variables.scss';
+@import '~styles/mixins.scss';
+@import '~styles/colors.scss';
+
+.preview-img {
+  position: relative;
+
+  display: inline-block;
+
+  max-height: 50px;
+  margin: 0 10px;
+
+  border: 3px solid $с-composer-sender_border;
+  border-radius: 3px;
+  background: black;
+
+
+
+  &__image {
+    max-height: 44px;
+  }
+
+  &:hover &__image {
+    transition: all .2s linear;
+
+    opacity: .5;
+  }
+
+  &__cross {
+    position: absolute;
+    top: 2px;
+    right: 5px;
+
+    display: none;
+
+    width: 10px;
+    height: 10px;
+
+    cursor: pointer;
+
+    &:active {
+      color: red;
+    }
+  }
+
+  &:hover  &__cross {
+    display: block;
+  }
+}

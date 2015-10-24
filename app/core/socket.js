@@ -1,6 +1,6 @@
 import io from 'socket.io-client';
 import store from '../store';
-import {Map} from 'immutable';
+import {Map, fromJS} from 'immutable';
 import {addMessage, loadChannelHistory, setEditedMessage} from '../actions/messages';
 import {addChannel, addUserToChannel} from '../actions/channels';
 import {setTyping, deleteTyping, hardDeleteTyping} from '../actions/typing';
@@ -13,11 +13,11 @@ export function socketClient(type = null, socketData = null) {
 
   if (type === 'SOCKET_INIT') {
     socket.on(SC.ADD_MESSAGE, (data) => {
-      store.dispatch(addMessage(Map(data)));
+      store.dispatch(addMessage(fromJS(data)));
     });
 
     socket.on(SC.EDIT_MESSAGE, (data) => {
-      store.dispatch(setEditedMessage(Map(data)));
+      store.dispatch(setEditedMessage(fromJS(data)));
     });
 
 
