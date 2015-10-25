@@ -19,3 +19,15 @@ export const messageFilterSelector = createSelector(
   filterValue,
   (messages, value) => messages.filter(message => message.get('text').toLowerCase().indexOf(value) !== -1)
 );
+
+
+export const imagesChannelSelector = createSelector(
+  [currentChannelMessagesSelector],
+  (messages) => {
+    return messages
+      .filter(message => !message.get('images').isEmpty())
+      .map(message => message.get('images'))
+      .reduce((acc, cur)=> acc.concat(cur));
+  }
+);
+

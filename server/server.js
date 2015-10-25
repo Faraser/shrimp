@@ -99,8 +99,6 @@ app.post('/checkemailexist', (req, res) => {
 
 const upload = multer({dest: 'static/images'});
 app.post('/upload', upload.array('images'), (req, res) => {
-  console.log('body', req.body);
-  console.log('files', req.files);
   res.json({
     status: 'success',
     text: 'File uploaded successfully',

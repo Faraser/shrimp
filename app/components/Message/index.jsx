@@ -7,6 +7,8 @@ import Linkify from 'react-linkify';
 import Textarea from 'react-textarea-autosize';
 import {M} from '../../../constants';
 import Embedly from 'components/Embedly';
+import Gallery from 'components/Gallery';
+import {Link} from 'react-router';
 
 export default class Message extends React.Component {
 
@@ -125,6 +127,12 @@ export default class Message extends React.Component {
   };
 
 
+  renderGallery = () => {
+    return (
+      <Gallery images={this.props.images} />
+    );
+  };
+
   render() {
     const {sender, text, currentUserId, senderRepeated, nextMessageIsMain, edited, addUrl, images} = this.props;
     const isSelfMessage = sender.get('id') === currentUserId;
@@ -152,7 +160,11 @@ export default class Message extends React.Component {
               <Linkify component={Embedly} properties={{other: !isSelfMessage, addUrl: addUrl}}>
                 {text}
               </Linkify>
-              {images.map((image, i) => <img src={image} className='embedly__image embedly__image_simple' key={i}/>)}
+              {images.map((image, i) => (
+              <Link to='/gallery'>
+                <img src={image} className='embedly__image embedly__image_simple' key={i}/>
+              </Link>
+              ))}
             </div>
             <Textarea
               value={this.state.editorValue}
