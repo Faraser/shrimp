@@ -14,7 +14,6 @@ import * as actionsChannels from 'actions/channels';
 import * as actionsMessages from 'actions/messages';
 import * as actionsLocal from 'actions/local';
 import * as actionsTyping from 'actions/typing';
-import * as actionsUrls from 'actions/urls';
 import {messageFilterSelector} from 'selectors/messagesSelector';
 import {contactsSelector} from 'selectors/contactsSelector';
 import DocumentTitle from 'react-document-title';
@@ -89,7 +88,7 @@ export default class Application extends React.Component {
 
   render() {
     const {messages, channels, local, dispatch, contacts, indirectChannels, directChannels, typing} = this.props;
-    const actionsCombine = Object.assign(actionsMessages, actionsLocal, actionsChannels, actionsTyping, actionsUrls);
+    const actionsCombine = Object.assign(actionsMessages, actionsLocal, actionsChannels, actionsTyping);
     const actions = bindActionCreators(actionsCombine, dispatch);
     const threads = (
       <Threads

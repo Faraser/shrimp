@@ -45,9 +45,3 @@ export function setEditedMessage(data) {
   };
 }
 
-export function addImageUrl(data) {
-  return {
-    type: A.ADD_IMAGE_URL,
-    payload: data,
-  };
-}

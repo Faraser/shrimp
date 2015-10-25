@@ -1,36 +1,23 @@
 import React, {PropTypes} from 'react';
-import {List} from 'immutable';
 import cx from 'classnames';
 import './styles.scss';
-import {connect} from 'react-redux';
 
-@connect(state => ({
-  urls: state.urls,
-}))
 export default class Embedly extends React.Component {
 
   static propTypes = {
     children: PropTypes.string.isRequired,
     other: PropTypes.bool,
-    urls: PropTypes.instanceOf(List).isRequired,
   };
 
   constructor(props) {
     super(props);
   }
 
-  componentWillMount = () => {
-    const foundedUrl = this.props.urls.find(url => url.get('url') === this.props.children);
-    if (!foundedUrl) {
-      this.props.addUrl({url: this.props.children, messageId: this.props.messageId});
-    }
-  };
-
 
   render = () => {
-    const {urls, children, other} = this.props;
-    const url = urls.find(item => item.get('url') === children);
-    if (!url || !url.get('data')) {
+    const {children, other, embeded} = this.props;
+    const url = embeded ? embeded.find(item => item.get('text') === children) : null;
+    if (!url) {
       return (
         <a
           href={children}
@@ -39,9 +26,10 @@ export default class Embedly extends React.Component {
         >{children}</a>
       );
     }
-    const data = url.get('data');
+    const data = url.toJS();
+    // TODO: refactor this
     if (data.type === 'photo') {
-      return null;
+      return (<div>{'Image must be here'}</div>);
     }
     return (
       <div className={cx('embedly', {'embedly_other': other})}>

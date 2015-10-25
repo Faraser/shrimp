@@ -10,7 +10,6 @@ export default class MessageList extends React.Component {
     messages: PropTypes.instanceOf(List).isRequired,
     scroll: PropTypes.func.isRequired,
     sendEditedMessage: PropTypes.func.isRequired,
-    addUrl: PropTypes.func.isRequired,
     local: PropTypes.instanceOf(Map).isRequired,
   }
 
@@ -28,8 +27,8 @@ export default class MessageList extends React.Component {
   }
 
   render() {
-    const {local, sendEditedMessage, addUrl} = this.props;
-
+    const {local, sendEditedMessage} = this.props;
+    window.messages = this.props.messages;
     let prevId = null;
     const messages = this.props.messages
       .map((message, i, arr) => {
@@ -55,8 +54,8 @@ export default class MessageList extends React.Component {
             currentUserId={local.get('userId')}
             messageId={message.get('id')}
             timestamp={message.get('timestamp')}
+            embeded={message.get('embeded')}
             sendEditedMessage={sendEditedMessage}
-            addUrl={addUrl}
           />
         );
       });

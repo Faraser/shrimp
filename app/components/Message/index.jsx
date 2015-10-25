@@ -7,7 +7,6 @@ import Linkify from 'react-linkify';
 import Textarea from 'react-textarea-autosize';
 import {M} from '../../../constants';
 import Embedly from 'components/Embedly';
-import Gallery from 'components/Gallery';
 import {Link} from 'react-router';
 
 export default class Message extends React.Component {
@@ -23,7 +22,7 @@ export default class Message extends React.Component {
     senderRepeated: PropTypes.bool.isRequired,
     nextMessageIsMain: PropTypes.bool.isRequired,
     sendEditedMessage: PropTypes.func.isRequired,
-    addUrl: PropTypes.func.isRequired,
+    embeded: PropTypes.instanceOf(List),
   };
 
 
@@ -41,10 +40,10 @@ export default class Message extends React.Component {
 
 
   componentDidMount = () => {
-    this.updateTime(this.props.timestamp);
-    this.timer = setInterval(()=> {
-      this.updateTime(this.props.timestamp);
-    }, 5000);
+    // this.updateTime(this.props.timestamp);
+    // this.timer = setInterval(()=> {
+    //  this.updateTime(this.props.timestamp);
+    // }, 5000);
   };
 
 
@@ -127,14 +126,8 @@ export default class Message extends React.Component {
   };
 
 
-  renderGallery = () => {
-    return (
-      <Gallery images={this.props.images} />
-    );
-  };
-
   render() {
-    const {sender, text, currentUserId, senderRepeated, nextMessageIsMain, edited, addUrl, images, messageId} = this.props;
+    const {sender, text, currentUserId, senderRepeated, nextMessageIsMain, edited, images, messageId, embeded} = this.props;
     const isSelfMessage = sender.get('id') === currentUserId;
     const userName = (() => {
       if (isSelfMessage || senderRepeated) return null;
@@ -159,7 +152,7 @@ export default class Message extends React.Component {
             <div hidden={this.state.isEdit}>
               <Linkify
                 component={Embedly}
-                properties={{other: !isSelfMessage, addUrl: addUrl, messageId: messageId}}>
+                properties={{other: !isSelfMessage, messageId: messageId, embeded: embeded}}>
                 {text}
               </Linkify>
               <div className='message__images' >

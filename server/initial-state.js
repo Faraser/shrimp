@@ -35,7 +35,13 @@ export default function getInitState(sessionId) {
           });
 
           state.channels = channelObjects;
-          state.messages = messages.map((message) => message.toObject());
+          state.messages = messages.map((message) => {
+            const m = message.toObject();
+            console.log(m);
+            m.embeded = m.embeded ? JSON.parse(m.embeded) : null;
+            return m;
+          });
+          // TODO: do right;
           state.local = {
             userId,
             sessionId,

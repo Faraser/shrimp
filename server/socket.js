@@ -6,7 +6,7 @@ import getChannelModel from './models/channel';
 import getUserModel from './models/user';
 import {SC, CS} from '../constants';
 import {checkSessionId, setUserInfo, joinToChannel, setFavoriteChannel, loadChannelHistory} from './db/db_core.js';
-import {checkEditPermission} from './validation';
+import {checkEditPermission, parseMessage} from './validation';
 // const debug = require('debug')('shrimp:server');
 const Message = getMessageModel();
 const Channel = getChannelModel();
@@ -32,7 +32,7 @@ export default function startSocketServer(http) {
   io.on('connection', socket => {
     User.getBySessionId(socket.sessionId)
       .then((user) => {
-        socket.broadcast.emit(SC.JOIN_USER, { user: user.toObject() });
+        socket.broadcast.emit(SC.JOIN_USER, {user: user.toObject()});
         return Channel.getForUser(user.id);
       })
       .then((channels) => {
@@ -56,15 +56,26 @@ export default function startSocketServer(http) {
         loadChannelHistory(channelId, (messages) => {
           if (messages.length) {
             const messagesObj = messages.map((message) => message.toObject());
-            socket.emit(SC.SET_CHANNEL_HISTORY, { messages: messagesObj });
+            socket.emit(SC.SET_CHANNEL_HISTORY, {messages: messagesObj});
           }
         });
       });
     });
 
-
+    // TODO: refactor this hell too
     socket.on(CS.ADD_MESSAGE, data => {
       Message.add(data, (err, result) => {
+        // console.log('result', result.toObject());
+        parseMessage(result).then(embeded => {
+          // console.log('from socket', embeded);
+          if (embeded !== null) {
+            Message.addEmbeded(result.id, embeded, (error, message) => {
+              // console.log('result updated', typeof result);
+              // console.log('channel', data.channelId);
+              io.to(data.channelId).emit(SC.UPDATE_MESSAGE, message.toObject());
+            });
+          }
+        });
         io.to(data.channelId).emit(SC.ADD_MESSAGE, result.toObject());
       });
     });
@@ -118,9 +129,9 @@ export default function startSocketServer(http) {
 
     socket.on(CS.MARK_AS_READ, data => {
       User.getBySessionId(socket.sessionId)
-      .then((user) => {
-        Channel.markAsRead(data, user.id);
-      });
+        .then((user) => {
+          Channel.markAsRead(data, user.id);
+        });
     });
 
     function findClientsSocket(roomId, namespace) {
