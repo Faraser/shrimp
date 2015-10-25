@@ -28,7 +28,7 @@
 
     min-width: 50px;
     max-width: $message_cloud_width;
-    padding: 9px 15px;
+    padding: 9px 10px 5px 8px;
 
     text-align: left;
 
@@ -147,14 +147,19 @@
 
   &__editor {
     min-width: 200px;
-    margin-bottom: 7px;
+    margin-bottom: 10px;
     padding: 2px 3px;
 
     resize: none;
 
     color: black;
-    border: none;
+    border: 1px solid white;
     border-radius: 5px;
+    outline: none;
+
+    &:focus {
+      border-color: black;
+    }
   }
 
   &__edit {
@@ -199,5 +204,17 @@
 
     font-size: 12px;
     font-weight: bolder;
+  }
+
+  &__images {
+    margin-top: 2px;
+  }
+
+  &__image {
+    max-height: 70px;
+    margin: 0 2px;
+
+    border: 2px solid white;
+    border-radius: 5px;
   }
 }

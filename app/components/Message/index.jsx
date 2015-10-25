@@ -41,10 +41,10 @@ export default class Message extends React.Component {
 
 
   componentDidMount = () => {
-    // this.updateTime(this.props.timestamp);
-    // this.timer = setInterval(()=> {
-    //  this.updateTime(this.props.timestamp);
-    // }, 5000);
+    this.updateTime(this.props.timestamp);
+    this.timer = setInterval(()=> {
+      this.updateTime(this.props.timestamp);
+    }, 5000);
   };
 
 
@@ -160,11 +160,13 @@ export default class Message extends React.Component {
               <Linkify component={Embedly} properties={{other: !isSelfMessage, addUrl: addUrl}}>
                 {text}
               </Linkify>
-              {images.map((image, i) => (
-              <Link to={`/gallery/${image.split('/')[3]}`} key={i}>
-                <img src={image} className='embedly__image embedly__image_simple' key={i}/>
-              </Link>
-              ))}
+              <div className='message__images' >
+                {images.map((image, i) => (
+                <Link to={`/gallery/${image.split('/')[3]}`} key={i}>
+                  <img src={image} className='message__image' key={i}/>
+                </Link>
+                ))}
+              </div>
             </div>
             <Textarea
               value={this.state.editorValue}
