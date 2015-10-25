@@ -12,7 +12,7 @@ export default (
   <div>
     <Route path='/' component={App} >
       <Route path='settings' component={Settings} />
-      <Route path='gallery' component={Gallery} />
+      <Route path='gallery/:startIndex' component={Gallery} />
     </Route>
     <Route path='/' component={LoginPage}>
       <Route path='login' component={Login} />

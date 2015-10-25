@@ -102,7 +102,7 @@ app.post('/upload', upload.array('images'), (req, res) => {
   res.json({
     status: 'success',
     text: 'File uploaded successfully',
-    paths: req.files.map(file => file.path),
+    paths: req.files.map(file => '/' + file.path),
   });
 });
 

@@ -161,7 +161,7 @@ export default class Message extends React.Component {
                 {text}
               </Linkify>
               {images.map((image, i) => (
-              <Link to='/gallery'>
+              <Link to={`/gallery/${image.split('/')[3]}`} key={i}>
                 <img src={image} className='embedly__image embedly__image_simple' key={i}/>
               </Link>
               ))}

@@ -14,18 +14,21 @@ export default class Gallery extends React.Component {
 
   static propTypes = {
     images: PropTypes.instanceOf(List).isRequired,
+    params: PropTypes.object.isRequired,
   };
 
 
   render() {
-    const {images} = this.props;
+    const {images, params} = this.props;
     const photos = images.toJS().map(image => ({original: image, thumbnail: image}));
+    const startIndex = images.findIndex(item => item.endsWith(params.startIndex));
     return (
       <div className='gallery'>
         <PopUp className='gallery__window'>
           <div>
             <ImageGallery
               items={photos}
+              startIndex={startIndex}
               />
           </div>
         </PopUp>
