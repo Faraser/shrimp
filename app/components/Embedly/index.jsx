@@ -22,7 +22,7 @@ export default class Embedly extends React.Component {
   componentWillMount = () => {
     const foundedUrl = this.props.urls.find(url => url.get('url') === this.props.children);
     if (!foundedUrl) {
-      this.props.addUrl({url: this.props.children});
+      this.props.addUrl({url: this.props.children, messageId: this.props.messageId});
     }
   };
 
@@ -33,22 +33,20 @@ export default class Embedly extends React.Component {
     if (!url || !url.get('data')) {
       return (
         <a
-          href={this.props.children}
+          href={children}
           target='_blank'
           className='embedly__link'
-        >{this.props.children}</a>
+        >{children}</a>
       );
     }
     const data = url.get('data');
     if (data.type === 'photo') {
-      return (
-        <img src={data.url} className='embedly__image embedly__image_simple' />
-      );
+      return null;
     }
     return (
       <div className={cx('embedly', {'embedly_other': other})}>
         <h3 className='embedly__title'>{data.title}</h3>
-        <a href={data.provider_url} className='embedly__link' target='_blank'>{data.provider_url}</a><br/>
+        <a href={children} className='embedly__link' target='_blank'>{data.provider_url}</a><br/>
         <img src={data.thumbnail_url} className='embedly__image'/>
         <div className='embedly__descr'>{data.description}</div>
       </div>

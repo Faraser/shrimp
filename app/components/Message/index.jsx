@@ -134,7 +134,7 @@ export default class Message extends React.Component {
   };
 
   render() {
-    const {sender, text, currentUserId, senderRepeated, nextMessageIsMain, edited, addUrl, images} = this.props;
+    const {sender, text, currentUserId, senderRepeated, nextMessageIsMain, edited, addUrl, images, messageId} = this.props;
     const isSelfMessage = sender.get('id') === currentUserId;
     const userName = (() => {
       if (isSelfMessage || senderRepeated) return null;
@@ -157,40 +157,43 @@ export default class Message extends React.Component {
           </div>
           <div className='message__text' ref='text'>
             <div hidden={this.state.isEdit}>
-              <Linkify component={Embedly} properties={{other: !isSelfMessage, addUrl: addUrl}}>
+              <Linkify
+                component={Embedly}
+                properties={{other: !isSelfMessage, addUrl: addUrl, messageId: messageId}}>
                 {text}
               </Linkify>
               <div className='message__images' >
                 {images.map((image, i) => (
-                <Link to={`/gallery/${image.split('/')[3]}`} key={i}>
+                <Link to={`/gallery/${image.split('/').slice(-1)}`} key={i}>
                   <img src={image} className='message__image' key={i}/>
                 </Link>
                 ))}
               </div>
             </div>
-            <Textarea
-              value={this.state.editorValue}
-              hidden={!this.state.isEdit}
-              onKeyDown={this.editorKeyDown}
-              onChange={this.editorChange}
-              onBlur={this.cancelEdit}
-              className='message__editor'
-              ref='editor'
-              minRows={2}
-              maxRows={10}
-              style={{width: this.state.editorWidth, height: this.state.editorHeight}}
+            <div hidden={!this.state.isEdit}>
+              <Textarea
+                value={this.state.editorValue}
+                onKeyDown={this.editorKeyDown}
+                onChange={this.editorChange}
+                // onBlur={this.cancelEdit}
+                className='message__editor'
+                ref='editor'
+                minRows={2}
+                maxRows={10}
+                style={{width: this.state.editorWidth, height: this.state.editorHeight}}
               />
+
+              <div
+                className='message__save-btn'
+                onClick={this.editEnd}
+                >{'enter to '}<u>{'save'}</u>{' changes'}</div>
+              <div
+                className='message__cancel-btn'
+                onClick={this.cancelEdit}
+                >{'esc to '}<u>{'cancel'}</u>
+              </div>
+            </div>
           </div>
-          <div
-            className='message__save-btn'
-            hidden={!this.state.isEdit}
-            onClick={this.editEnd}
-            >{'enter to '}<u>{'save'}</u>{' changes'}</div>
-          <div
-            className='message__cancel-btn'
-            hidden={!this.state.isEdit}
-            onClick={this.cancelEdit}
-            >{'esc to '}<u>{'cancel'}</u></div>
           <div
             className='message__date'
             hidden={this.state.isEdit}

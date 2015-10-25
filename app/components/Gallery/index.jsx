@@ -28,7 +28,7 @@ export default class Gallery extends React.Component {
           <div>
             <ImageGallery
               items={photos}
-              startIndex={startIndex}
+              startIndex={startIndex > -1 ? startIndex : 0}
               />
           </div>
         </PopUp>

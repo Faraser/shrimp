@@ -54,6 +54,7 @@ const A = {
   EDIT_MESSAGE: 'EDIT_MESSAGE',
   ADD_URL: 'ADD_URL',
   UPDATE_URL: 'UPDATE_URL',
+  ADD_IMAGE_URL: 'ADD_IMAGE_URL',
 };
 
 const M = {

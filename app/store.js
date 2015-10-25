@@ -7,6 +7,7 @@ import createHistory from 'history/lib/createBrowserHistory';
 import {A, M} from '../constants';
 import cookies from 'browser-cookies';
 import {updateUrl} from 'actions/urls';
+import {addImageUrl} from 'actions/messages';
 
 const socketMiddleware = () => next => action => {
   if (action.send) {
@@ -27,7 +28,12 @@ const uploadOembedDataMiddleware = (store) => next => action => {
   if (action.type === A.ADD_URL) {
     fetch(`http://api.embed.ly/1/oembed?url=${action.payload.url}&key=${M.API_KEY}`)
       .then(response => response.json())
-      .then(data => store.dispatch(updateUrl({url: action.payload.url, data: data})));
+      .then(data => {
+        if (data.type === 'photo') {
+          store.dispatch(addImageUrl({url: data.url, messageId: action.payload.messageId}));
+        }
+        store.dispatch(updateUrl({url: action.payload.url, data: data}));
+      });
   }
   return next(action);
 };

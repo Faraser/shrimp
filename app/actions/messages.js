@@ -44,3 +44,10 @@ export function setEditedMessage(data) {
     payload: data,
   };
 }
+
+export function addImageUrl(data) {
+  return {
+    type: A.ADD_IMAGE_URL,
+    payload: data,
+  };
+}
