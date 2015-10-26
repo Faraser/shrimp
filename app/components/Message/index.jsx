@@ -8,6 +8,7 @@ import Textarea from 'react-textarea-autosize';
 import {M} from '../../../constants';
 import Embedly from 'components/Embedly';
 import {Link} from 'react-router';
+import ImagePreviews from 'components/ImagePreviews';
 
 export default class Message extends React.Component {
 
@@ -35,6 +36,7 @@ export default class Message extends React.Component {
       editorHeight: 0,
       editorWidth: 0,
       editorValue: this.props.text,
+      editorImages: this.props.images,
     };
   }
 
@@ -73,22 +75,29 @@ export default class Message extends React.Component {
       editorHeight: textCloud.height,
       editorWidth: textCloud.width,
       editorValue: this.props.text,
+      editorImages: this.props.images,
     });
   };
 
 
   editEnd = () => {
     const newText = this.state.editorValue.trim();
-    if (newText !== this.props.text && newText) {
+    if (
+        newText !== this.props.text && newText
+        || this.state.editorImages !== this.props.images && newText
+      ) {
       this.props.sendEditedMessage({
         text: newText,
         edited: true,
         messageId: this.props.messageId,
+        images: this.state.editorImages,
       });
+      this.setState({
+        isEdit: false,
+      });
+    } else {
+      this.cancelEdit();
     }
-    this.setState({
-      isEdit: false,
-    });
   };
 
 
@@ -105,12 +114,19 @@ export default class Message extends React.Component {
     this.setState({
       isEdit: false,
       editorValue: this.props.text,
+      editorImages: this.props.images,
     });
   };
 
   editorChange = (e) => {
     this.setState({
       editorValue: e.target.value.slice(0, this.messageMaxLength = 220),
+    });
+  };
+
+  removeImage = (index) => {
+    this.setState({
+      editorImages: this.state.editorImages.remove(index),
     });
   };
 
@@ -175,7 +191,11 @@ export default class Message extends React.Component {
                 maxRows={10}
                 style={{width: this.state.editorWidth, height: this.state.editorHeight}}
               />
-
+              <ImagePreviews
+                className='message__preview-image'
+                links={this.state.editorImages}
+                remove={this.removeImage}
+                />
               <div
                 className='message__save-btn'
                 onClick={this.editEnd}

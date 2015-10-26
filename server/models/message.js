@@ -39,6 +39,7 @@ message.statics.edit = function edit(data, cb) {
     m.text = data.text;
     m.timestamp = Date.now();
     m.edited = true;
+    m.images = data.images;
     m.save(cb);
   });
 };

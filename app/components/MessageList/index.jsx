@@ -28,7 +28,6 @@ export default class MessageList extends React.Component {
 
   render() {
     const {local, sendEditedMessage} = this.props;
-    window.messages = this.props.messages;
     let prevId = null;
     const messages = this.props.messages
       .map((message, i, arr) => {
