@@ -12,7 +12,7 @@
 
     overflow: hidden;
 
-    width: $width;
+    max-width: $width;
     margin: 0 auto;
 
     border: 1px solid $c-login-window_border;
@@ -32,4 +32,10 @@
 
     background: rgba(0, 0, 0, .7);
   }
+}
+
+.image-gallery-content {
+  overflow: hidden;
+
+  max-height: 60vh;
 }
