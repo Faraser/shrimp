@@ -82,15 +82,19 @@ export default class Message extends React.Component {
 
   editEnd = () => {
     const newText = this.state.editorValue.trim();
-    if (
-        newText !== this.props.text && newText
-        || this.state.editorImages !== this.props.images && newText
-      ) {
+    const newImages = this.state.editorImages;
+    const isImagesChanged = newImages !== this.props.images;
+    const isTextChanged = newText !== this.props.text;
+    const isImagesEmpty = newImages.isEmpty();
+    if (newText && isTextChanged ||
+        isTextChanged && !isImagesEmpty ||
+        isImagesChanged && !isImagesEmpty ||
+        isImagesChanged && newText) {
       this.props.sendEditedMessage({
         text: newText,
         edited: true,
         messageId: this.props.messageId,
-        images: this.state.editorImages,
+        images: newImages,
       });
       this.setState({
         isEdit: false,
