@@ -10,7 +10,7 @@ const message = new mongoose.Schema({
   timestamp: { type: Date, default: Date.now },
   edited: { type: Boolean, default: false },
   images: [String],
-  embeded: String,
+  embeded: [],
 });
 
 message.statics.getAll = function getAll() {
@@ -57,15 +57,13 @@ message.statics.getById = function getById(id) {
 
 message.statics.addEmbeded = function addEmbeded(id, data, cb) {
   this.findOne( {_id: new ObjectId(id)}, (err, m) => {
-    const photos = data
+    data
       .filter(item => item.type === 'photo')
-      .map(item => item.url);
-    const embeded = data.filter(item => item.type !== 'photo');
-    console.log(photos, embeded);
-    // TODO: push images and embeded;
-    m.images = photos;
-    m.embeded = JSON.stringify(embeded);
-    console.log('update message', m);
+      .map(item => item.url)
+      .map(item => m.images.push(item));
+    data
+      .filter(item => item.type !== 'photo')
+      .map(item => m.embeded.push(item));
     m.save(cb);
   });
 };

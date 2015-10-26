@@ -16,11 +16,7 @@ export function socketClient(type = null, socketData = null) {
       store.dispatch(addMessage(fromJS(data)));
     });
     socket.on(SC.UPDATE_MESSAGE, (data) => {
-      // TODO: refactor this
-      const message = data;
-      message.embeded = JSON.parse(message.embeded);
-      console.log('Updated', message);
-      store.dispatch(setEditedMessage(fromJS(message)));
+      store.dispatch(setEditedMessage(fromJS(data)));
     });
 
     socket.on(SC.EDIT_MESSAGE, (data) => {
