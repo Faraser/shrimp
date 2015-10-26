@@ -21,7 +21,7 @@ export function checkEditPermission(sessionId, messageId) {
 }
 
 
-export function parseMessage(message) {
+export function parseUrlsInMessage(message) {
   const link = new Linkify();
   const matches = link.match(message.text);
   return new Promise((resolve) => {

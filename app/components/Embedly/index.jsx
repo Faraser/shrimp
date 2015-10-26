@@ -1,5 +1,6 @@
 import React, {PropTypes} from 'react';
 import cx from 'classnames';
+import Linkify from 'linkify-it';
 import './styles.scss';
 
 export default class Embedly extends React.Component {
@@ -11,6 +12,7 @@ export default class Embedly extends React.Component {
 
   constructor(props) {
     super(props);
+    this.link = new Linkify();
   }
 
 
@@ -20,21 +22,17 @@ export default class Embedly extends React.Component {
     if (!url) {
       return (
         <a
-          href={children}
+          href={this.link.match(children)[0].url}
           target='_blank'
           className='embedly__link'
         >{children}</a>
       );
     }
     const data = url.toJS();
-    // TODO: refactor this
-    if (data.type === 'photo') {
-      return (<div>{'Image must be here'}</div>);
-    }
     return (
       <div className={cx('embedly', {'embedly_other': other})}>
         <h3 className='embedly__title'>{data.title}</h3>
-        <a href={children} className='embedly__link' target='_blank'>{data.provider_url}</a><br/>
+        <a href={data.url} className='embedly__link' target='_blank'>{data.provider_url}</a><br/>
         <img src={data.thumbnail_url} className='embedly__image'/>
         <div className='embedly__descr'>{data.description}</div>
       </div>

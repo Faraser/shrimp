@@ -6,7 +6,7 @@ import getChannelModel from './models/channel';
 import getUserModel from './models/user';
 import {SC, CS} from '../constants';
 import {checkSessionId, setUserInfo, joinToChannel, setFavoriteChannel, loadChannelHistory} from './db/db_core.js';
-import {checkEditPermission, parseMessage} from './validation';
+import {checkEditPermission, parseUrlsInMessage} from './validation';
 // const debug = require('debug')('shrimp:server');
 const Message = getMessageModel();
 const Channel = getChannelModel();
@@ -62,16 +62,11 @@ export default function startSocketServer(http) {
       });
     });
 
-    // TODO: refactor this hell too
     socket.on(CS.ADD_MESSAGE, data => {
       Message.add(data, (err, result) => {
-        // console.log('result', result.toObject());
-        parseMessage(result).then(embeded => {
-          // console.log('from socket', embeded);
+        parseUrlsInMessage(result).then(embeded => {
           if (embeded !== null) {
             Message.addEmbeded(result.id, embeded, (error, message) => {
-              // console.log('result updated', typeof result);
-              // console.log('channel', data.channelId);
               io.to(data.channelId).emit(SC.UPDATE_MESSAGE, message.toObject());
             });
           }
