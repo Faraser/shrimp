@@ -1,11 +1,12 @@
 import getMessageModel from './models/message';
 import getUserModel from './models/user';
+import {M} from '../constants.js';
+import Linkify from 'linkify-it';
+import fetch from 'node-fetch';
 
 const Message = getMessageModel();
 const User = getUserModel();
 
-import Linkify from 'linkify-it';
-import fetch from 'node-fetch';
 
 export function checkEditPermission(sessionId, messageId) {
   return new Promise((resolve, reject) => {
@@ -18,40 +19,35 @@ export function checkEditPermission(sessionId, messageId) {
     });
   });
 }
-// TODO: tomorrow refactor this hell
+
+
 export function parseMessage(message) {
-  console.log('message', message);
   const link = new Linkify();
   const matches = link.match(message.text);
-  console.log('matches', matches);
-
   return new Promise((resolve) => {
     if (matches === null) {
       resolve(null);
-      // reject('Links not found');
     }
-    const promises = matches.map(match => {
-      return fetch(`http://api.embed.ly/1/oembed?url=${match.url}&key=0ccb2018f041465fae7e0d65154b0399`);
-    });
-    // console.log(promises);
-    Promise.all(promises)
+    const requests = matches.map(match => fetch(`http://api.embed.ly/1/oembed?url=${match.url}&key=${M.API_KEY}`));
+    Promise.all(requests)
       .then(responses => {
-        console.log('responses', responses);
-        const jsons = responses.map(response => response.json());
-        console.log('jsons', jsons);
-        return jsons;
+        return responses.filter((item, i) => {
+          if (item.status !== 200) {
+            matches.splice(i, 1);
+            return false;
+          }
+          return true;
+        });
       })
-      .then(jsons => {
-        Promise.all(jsons)
-          .then(datas => {
-            console.log('dates', datas);
-            const result = datas.map((data, i) => {
-              data.text = matches[i].text;
-              return data;
-            });
-            resolve(result);
-          });
+      .then(responses => Promise.all(responses.map(item => item.json())))
+      .then(data => {
+        const result = data.map((item, i) => {
+          item.text = matches[i].text;
+          return item;
+        });
+        resolve(result);
       })
-    ;
+      .catch(err => console.log(err));
   });
 }
+
