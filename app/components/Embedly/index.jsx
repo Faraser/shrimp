@@ -1,6 +1,5 @@
 import React, {PropTypes} from 'react';
 import cx from 'classnames';
-import Linkify from 'linkify-it';
 import './styles.scss';
 
 export default class Embedly extends React.Component {
@@ -12,24 +11,32 @@ export default class Embedly extends React.Component {
 
   constructor(props) {
     super(props);
-    this.link = new Linkify();
   }
 
 
   render = () => {
-    console.log(this.props);
-    const {children, other, embeded} = this.props;
+    const {children, other, embeded, href} = this.props;
     const url = embeded ? embeded.find(item => item.get('text') === children) : null;
     if (!url) {
       return (
         <a
-          href={this.link.match(children)[0].url}
+          href={href}
           target='_blank'
           className='embedly__link'
         >{children}</a>
       );
     }
     const data = url.toJS();
+    if (data.type === 'video') {
+      const html = {__html: data.html};
+      return (
+        <div className={cx('embedly', {'embedly_other': other})}>
+          <h3 className='embedly__title'>{data.title}</h3>
+          <a href={data.url} className='embedly__link' target='_blank'>{data.provider_url}</a><br/>
+          <div className='embedly__video' dangerouslySetInnerHTML={html} />
+        </div>
+      );
+    }
     return (
       <div className={cx('embedly', {'embedly_other': other})}>
         <h3 className='embedly__title'>{data.title}</h3>
