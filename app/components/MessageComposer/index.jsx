@@ -45,6 +45,11 @@ export default class MessageComposer extends React.Component {
     );
   }
 
+  componentDidUpdate = (prevProps, prevState) => {
+    if (prevState.files !== this.state.files) {
+      this.refs.textarea.focus();
+    }
+  };
 
   onDrop = (files) => {
     const data = new FormData();
@@ -144,6 +149,7 @@ export default class MessageComposer extends React.Component {
 
           <div className='composer__sender'>
             <Textarea
+              ref='textarea'
               value={this.state.text}
               onKeyPress={this.textKeyPress}
               onChange={this.textChange}

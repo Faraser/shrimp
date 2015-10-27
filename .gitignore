@@ -4,3 +4,4 @@
 /node_modules/
 /static/
 npm-debug.log
+compile.es5.js

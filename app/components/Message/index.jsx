@@ -1,4 +1,5 @@
 import React, {PropTypes} from 'react';
+import ReactDOM from 'react-dom';
 import Immutable, {Map, List} from 'immutable';
 import cx from 'classnames';
 import './styles.scss';
@@ -59,6 +60,16 @@ export default class Message extends React.Component {
     );
   }
 
+
+  componentDidUpdate = (prevProps, prevState) => {
+    if (!prevState.isEdit && this.state.isEdit) {
+      const editor = ReactDOM.findDOMNode(this.refs.editor);
+      editor.setSelectionRange(this.state.editorValue.length, this.state.editorValue.length);
+      editor.focus();
+    }
+  };
+
+
   editStart = () => {
     const textCloud = window.getComputedStyle(this.refs.text);
     this.setState({
@@ -115,7 +126,7 @@ export default class Message extends React.Component {
 
   editorChange = (e) => {
     this.setState({
-      editorValue: e.target.value.slice(0, this.messageMaxLength = 220),
+      editorValue: e.target.value.slice(0, M.MESSAGE_MAX_LENGTH),
     });
   };
 
