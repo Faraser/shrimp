@@ -42,17 +42,10 @@ export default class Message extends React.Component {
 
 
   componentDidMount = () => {
-    // this.updateTime(this.props.timestamp);
-    // this.timer = setInterval(()=> {
-    //  this.updateTime(this.props.timestamp);
-    // }, 5000);
-  };
-
-
-  componentDidUpdate = () => {
-    if (this.state.isEdit) {
-      this.refs.editor.focus();
-    }
+    this.updateTime(this.props.timestamp);
+    this.timer = setInterval(()=> {
+      this.updateTime(this.props.timestamp);
+    }, 5000);
   };
 
 

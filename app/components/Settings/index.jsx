@@ -74,7 +74,6 @@ export default class Settings extends React.Component {
   componentWillReceiveProps(nextProps) {
     if (!Immutable.is(nextProps.users, this.props.users)) {
       const currentUser = nextProps.users.find(user => user.get('id') === nextProps.local.get('userId'));
-      console.log(currentUser.toJS());
       this.setState({
         email: currentUser.get('email'),
         name: currentUser.get('name'),

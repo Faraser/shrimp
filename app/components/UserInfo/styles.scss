@@ -47,38 +47,54 @@
 
   &__back {
     width: 400px;
-    height: 500px;
+    max-height: 500px;
     padding: 15px;
 
     font-size: 16px;
   }
 
   &__avatar {
-    float: left;
+    display: block;
+
+    width: 80px;
+    margin: 0 auto;
 
     border-radius: 5px;
   }
 
-  &__name {
-    height: 20%;
-    padding-top: 10px;
-    padding-left: 90px;
+  &__field-name {
+    float: left;
+
+    width: 145px;
+    height: 10%;
+
+    text-align: right;
+
+    color: $c-gray-70;
   }
 
-  &__fullname {
+  &__field-value {
     height: 10%;
+    margin-left: 160px;
   }
 
-  &__email {
-    height: 10%;
+  &__info {
+    margin-top: 30px;
   }
 
-  &__country,
-  &__city {
-    height: 10%;
+  &__info-title {
+    margin-bottom: 5px;
+
+    text-align: center;
+
+    color: $c-gray-70;
   }
 
-  &__age {
-    height: 10%;
+  &__info-content {
+    padding: 10px;
+
+    text-indent: 20px;
+
+    line-height: 20px;
   }
 }
