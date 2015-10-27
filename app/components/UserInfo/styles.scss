@@ -1,0 +1,40 @@
+@import '~styles/variables.scss';
+@import '~styles/mixins.scss';
+@import '~styles/colors.scss';
+@import '../../../node_modules/react-image-gallery/src/ImageGallery';
+
+.user-info {
+  &__window {
+    $width: 500px;
+    $height: 400px;
+
+    z-index: 15;
+
+    overflow: hidden;
+
+    max-width: $width;
+    margin: 0 auto;
+
+    border: 1px solid $c-login-window_border;
+    border-radius: $main-border-radius;
+    background-color: $c-login-window_bg;
+    box-shadow: 0 0 30px 2px $c-main-shadow;
+
+    font-size: 20px;
+  }
+  &__overlay {
+    position: fixed;
+    z-index: 14;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+
+    background: rgba(0, 0, 0, .7);
+  }
+
+  &__back {
+    width: 300px;
+    height: 500px;
+  }
+}

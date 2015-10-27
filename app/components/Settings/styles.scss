@@ -11,6 +11,49 @@
   }
   &__input {
     margin-top: 10px;
+
+    line-height: 40px;
+
+    &_country {
+      width: 48%;
+      margin-right: 4%;
+    }
+
+    &_city {
+      width: 48%;
+    }
+
+    &_fullname {
+      width: 75%;
+    }
+
+    &_age {
+      width: 20%;
+      margin-left: 5%;
+    }
+
+    &_about {
+      position: relative;
+
+      width: 100%;
+      height: 140px;
+      padding: 10px 15px;
+
+      resize: none;
+
+      border: 1px solid $с-composer-sender_border;
+      border-radius: 5px;
+      outline: none;
+      background-color: $c-input_bg;
+
+      font-size: 16px;
+      line-height: 16px;
+
+      &:focus {
+        border: 1px solid $c-input_focus;
+        box-shadow: 0 0 5px transparentize($c-input_focus, .5);
+      }
+    }
   }
   &__submit-button {
     margin-top: 20px;
@@ -23,7 +66,7 @@
   }
   &__window {
     $width: 500px;
-    $height: 400px;
+    $height: 600px;
 
     position: absolute;
     z-index: 15; // highly then .login-page__rect
@@ -33,6 +76,7 @@
     overflow: hidden;
 
     width: $width;
+    height: $height;
     margin-top: -$height / 2;
     margin-left: -$width / 2;
 

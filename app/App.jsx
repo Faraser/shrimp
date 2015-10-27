@@ -65,7 +65,7 @@ export default class Application extends React.Component {
       store.dispatch(actionsLocal.getInitData());
     }
 
-    const mql = window.matchMedia('(min-width: 800px)');
+    const mql = window.matchMedia('(min-width: 300px)');
     mql.addListener(this.mediaQueryChanged);
     this.setState({mql: mql, sidebarDocked: mql.matches, sidebarOpen: mql.matches});
   }

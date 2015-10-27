@@ -156,10 +156,15 @@ export function setFavoriteChannel(sessionId, data) {
 }
 
 
-export function setUserInfo(sessionId, email, name, callback) {
+export function setUserInfo(sessionId, data, callback) {
   return User.findOneAndUpdate({ sessionId: sessionId }, {
-    email: email,
-    name: name,
+    email: data.email,
+    name: data.name,
+    fullName: data.fullName,
+    age: data.age,
+    country: data.country,
+    city: data.city,
+    info: data.info,
   }, { new: true }, (error, changedUser) => {
     if (error) debug(error);
     callback(changedUser.toObject());

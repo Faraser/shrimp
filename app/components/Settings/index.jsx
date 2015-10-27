@@ -39,7 +39,12 @@ export default class Settings extends React.Component {
       shakeInfo: false,
       email: '',
       name: '',
+      fullName: '',
       password: '',
+      city: '',
+      country: '',
+      age: 0,
+      about: '',
       repeatedPassword: '',
       showPasswordError: false,
       showSecondPasswordError: false,
@@ -57,6 +62,11 @@ export default class Settings extends React.Component {
       this.setState({
         email: currentUser.get('email'),
         name: currentUser.get('name'),
+        fullName: currentUser.get('fullName'),
+        city: currentUser.get('city'),
+        country: currentUser.get('country'),
+        age: currentUser.get('age'),
+        about: currentUser.get('info'),
       });
     }
   }
@@ -64,10 +74,15 @@ export default class Settings extends React.Component {
   componentWillReceiveProps(nextProps) {
     if (!Immutable.is(nextProps.users, this.props.users)) {
       const currentUser = nextProps.users.find(user => user.get('id') === nextProps.local.get('userId'));
-
+      console.log(currentUser.toJS());
       this.setState({
         email: currentUser.get('email'),
         name: currentUser.get('name'),
+        fullName: currentUser.get('fullName'),
+        city: currentUser.get('city'),
+        country: currentUser.get('country'),
+        age: currentUser.get('age'),
+        about: currentUser.get('info'),
       });
     }
   }
@@ -132,6 +147,11 @@ export default class Settings extends React.Component {
     const changedData = {
       email: this.state.email,
       name: this.state.name,
+      fullName: this.state.fullName,
+      city: this.state.city,
+      country: this.state.country,
+      age: this.state.age,
+      info: this.state.about,
     };
 
 
@@ -156,6 +176,12 @@ export default class Settings extends React.Component {
     });
   }
 
+
+  handleChange = e => {
+    const nextState = {};
+    nextState[e.target.name] = e.target.value;
+    this.setState(nextState);
+  }
 
   render() {
     return (
@@ -183,7 +209,7 @@ export default class Settings extends React.Component {
               value={this.state.email}
               name='email'
               placeholder='Email'
-              onChange={this.emailChange}
+              onChange={this.handleChange}
             />
             <Input
               className={cx('settings__input', {
@@ -192,8 +218,56 @@ export default class Settings extends React.Component {
               value={this.state.name}
               name='name'
               placeholder='Name'
-              onChange={this.nameChange}
+              onChange={this.handleChange}
             />
+            <Input
+              className={cx('settings__input', 'settings__input_fullname', {
+                'input_type_error': this.state.showNameError,
+              })}
+              value={this.state.fullName}
+              name='fullName'
+              placeholder='Full Name'
+              onChange={this.handleChange}
+              />
+            <Input
+              className={cx('settings__input', 'settings__input_age', {
+                'input_type_error': this.state.showNameError,
+              })}
+              value={this.state.age}
+              type='number'
+              name='age'
+              placeholder='age'
+              min='1'
+              max='99'
+              onChange={this.handleChange}
+              />
+            <Input
+              className={cx('settings__input', 'settings__input_country', {
+                'input_type_error': this.state.showNameError,
+              })}
+              value={this.state.country}
+              name='country'
+              placeholder='city'
+              onChange={this.handleChange}
+              />
+            <Input
+              className={cx('settings__input', ' settings__input_city', {
+                'input_type_error': this.state.showNameError,
+              })}
+              value={this.state.city}
+              name='city'
+              placeholder='city'
+              onChange={this.handleChange}
+              />
+            <textarea
+              className={cx('settings__input', ' settings__input_about', {
+                'input_type_error': this.state.showNameError,
+              })}
+              value={this.state.about}
+              name='about'
+              placeholder='about'
+              onChange={this.handleChange}
+              />
             <Button
               className='settings__submit-button'
               type='submit'

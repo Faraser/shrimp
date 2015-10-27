@@ -2,6 +2,7 @@ import React, {PropTypes} from 'react';
 import Immutable, {Map} from 'immutable';
 import cx from 'classnames';
 import UnreadCounter from 'components/UnreadCounter';
+import {Link} from 'react-router';
 import './styles.scss';
 
 export default class PeopleItem extends React.Component {
@@ -38,9 +39,14 @@ export default class PeopleItem extends React.Component {
     }
   }
 
+  openUserInfo = () => {
+    console.log('open');
+  }
+
 
   render() {
     const {isCurrent, item, lastMessage, isOnline} = this.props;
+    window.item = item;
     // Don't show unread count for current channel
     const unreadCount = this.props.isCurrent || this.props.unreadCount === 0 ? null : this.props.unreadCount;
     return (
@@ -55,6 +61,10 @@ export default class PeopleItem extends React.Component {
         <div className='person__last-message'>
           {lastMessage ? lastMessage.get('text') : '🙊'}
         </div>
+
+        <Link to={`/users/${item.get('id')}`}>
+          <button onClick={this.openUserInfo}>info</button>
+        </Link>
         <UnreadCounter
           className='person__unread-counter'
           count={unreadCount}
