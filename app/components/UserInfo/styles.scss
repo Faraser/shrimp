@@ -54,6 +54,8 @@
   }
 
   &__avatar {
+    position: absolute;
+
     display: block;
 
     width: 80px;
@@ -65,7 +67,7 @@
   &__field-name {
     float: left;
 
-    width: 145px;
+    width: 180px;
     height: 10%;
 
     text-align: right;
@@ -75,26 +77,17 @@
 
   &__field-value {
     height: 10%;
-    margin-left: 160px;
+    margin-left: 200px;
   }
 
-  &__info {
-    margin-top: 30px;
+
+  &__field-name_left {
+    width: 80px;
+
+    text-align: right;
   }
 
-  &__info-title {
-    margin-bottom: 5px;
-
-    text-align: center;
-
-    color: $c-gray-70;
-  }
-
-  &__info-content {
-    padding: 10px;
-
-    text-indent: 20px;
-
-    line-height: 20px;
+  &__field-value_left {
+    margin-left: 110px;
   }
 }

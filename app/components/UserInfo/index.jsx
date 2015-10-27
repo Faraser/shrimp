@@ -33,26 +33,27 @@ export default class UserInfo extends React.Component {
               <dt className='user-info__field-name'>Full name:</dt>
               <dd className='user-info__field-value'>{user.get('fullName')}</dd>
             </dl>
+            <br/>
             <dl hidden={!user.get('email')}>
-              <dt className='user-info__field-name'>Email:</dt>
-              <dd className='user-info__field-value'>{user.get('email')}</dd>
+              <dt className='user-info__field-name user-info__field-name_left'>Email:</dt>
+              <dd className='user-info__field-value user-info__field-value_left'>{user.get('email')}</dd>
             </dl>
             <dl hidden={!user.get('country')}>
-              <dt className='user-info__field-name'>Country:</dt>
-              <dd className='user-info__field-value'>{user.get('country')}</dd>
+              <dt className='user-info__field-name user-info__field-name_left'>Country:</dt>
+              <dd className='user-info__field-value user-info__field-value_left'>{user.get('country')}</dd>
             </dl>
             <dl hidden={!user.get('city')}>
-              <dt className='user-info__field-name'>City:</dt>
-              <dd className='user-info__field-value'>{user.get('city')}</dd>
+              <dt className='user-info__field-name user-info__field-name_left'>City:</dt>
+              <dd className='user-info__field-value user-info__field-value_left'>{user.get('city')}</dd>
             </dl>
             <dl hidden={!user.get('age')}>
-              <dt className='user-info__field-name'>Age:</dt>
-              <dd className='user-info__field-value'>{user.get('age')}</dd>
+              <dt className='user-info__field-name user-info__field-name_left'>Age:</dt>
+              <dd className='user-info__field-value user-info__field-value_left'>{user.get('age')}</dd>
             </dl>
-            <div className='user-info__info' hidden={!user.get('info')}>
-              <div className='user-info__info-title'>Bio</div>
-              <div className='user-info__info-content'>{user.get('info')}</div>
-            </div>
+            <dl hidden={!user.get('info')}>
+              <dt className='user-info__field-name user-info__field-name_left'>Bio:</dt>
+              <dd className='user-info__field-value user-info__field-value_left'>{user.get('info')}</dd>
+            </dl>
           </div>
         </PopUp>
         <Link to='/'>_
