@@ -221,18 +221,14 @@ export default class Settings extends React.Component {
               onChange={this.handleChange}
             />
             <Input
-              className={cx('settings__input', 'settings__input_fullname', {
-                'input_type_error': this.state.showNameError,
-              })}
+              className={cx('settings__input', 'settings__input_fullname')}
               value={this.state.fullName}
               name='fullName'
               placeholder='Full Name'
               onChange={this.handleChange}
               />
             <Input
-              className={cx('settings__input', 'settings__input_age', {
-                'input_type_error': this.state.showNameError,
-              })}
+              className={cx('settings__input', 'settings__input_age')}
               value={this.state.age}
               type='number'
               name='age'
@@ -242,27 +238,21 @@ export default class Settings extends React.Component {
               onChange={this.handleChange}
               />
             <Input
-              className={cx('settings__input', 'settings__input_country', {
-                'input_type_error': this.state.showNameError,
-              })}
+              className={cx('settings__input', 'settings__input_country')}
               value={this.state.country}
               name='country'
               placeholder='Country'
               onChange={this.handleChange}
               />
             <Input
-              className={cx('settings__input', ' settings__input_city', {
-                'input_type_error': this.state.showNameError,
-              })}
+              className={cx('settings__input', ' settings__input_city')}
               value={this.state.city}
               name='city'
               placeholder='City'
               onChange={this.handleChange}
               />
             <textarea
-              className={cx('settings__input', ' settings__input_about', {
-                'input_type_error': this.state.showNameError,
-              })}
+              className={cx('settings__input', ' settings__input_about')}
               value={this.state.about}
               name='about'
               placeholder='About self'

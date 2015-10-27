@@ -43,7 +43,9 @@ export default class UserInfo extends React.Component {
             <div className='user-info__age'>
               Age: {user.get('age')}
             </div>
-            <div className='user-info__info'>{user.get('info')}</div>
+            <div className='user-info__info'>
+              {user.get('info')}
+            </div>
           </div>
         </PopUp>
         <Link to='/'>_

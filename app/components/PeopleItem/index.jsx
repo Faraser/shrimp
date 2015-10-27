@@ -39,6 +39,9 @@ export default class PeopleItem extends React.Component {
     }
   }
 
+  preventClick = (e)=> {
+    e.stopPropagation();
+  }
 
   render() {
     const {isCurrent, item, lastMessage, isOnline} = this.props;
@@ -61,8 +64,9 @@ export default class PeopleItem extends React.Component {
           className='person__unread-counter'
           count={unreadCount}
         />
-        <Link to={`/users/${item.get('id')}`}>
-          <img className='person__avatar' src={item.get('avatar')} />
+        <Link to={`/users/${item.get('id')}`} onClick={this.preventClick}>
+          <img className='person__avatar' src={item.get('avatar')}
+            />
         </Link>
       </div>
     );

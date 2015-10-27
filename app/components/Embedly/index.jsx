@@ -32,7 +32,7 @@ export default class Embedly extends React.Component {
       return (
         <div className={cx('embedly', {'embedly_other': other})}>
           <h3 className='embedly__title'>{data.title}</h3>
-          <a href={data.url} className='embedly__link' target='_blank'>{data.provider_url}</a><br/>
+          <a href={href} className='embedly__link' target='_blank'>{data.provider_url}</a><br/>
           <div className='embedly__video' dangerouslySetInnerHTML={html} />
         </div>
       );
@@ -40,7 +40,7 @@ export default class Embedly extends React.Component {
     return (
       <div className={cx('embedly', {'embedly_other': other})}>
         <h3 className='embedly__title'>{data.title}</h3>
-        <a href={data.url} className='embedly__link' target='_blank'>{data.provider_url}</a><br/>
+        <a href={href} className='embedly__link' target='_blank'>{data.provider_url}</a><br/>
         <img src={data.thumbnail_url} className='embedly__image'/>
         <div className='embedly__descr'>{data.description}</div>
       </div>
