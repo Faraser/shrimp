@@ -13,6 +13,13 @@ export default class Embedly extends React.Component {
     super(props);
   }
 
+  shouldComponentUpdate(nextProps) {
+    return !(
+      nextProps.children === this.props.children &&
+      nextProps.embeded === this.props.embeded &&
+      nextProps.href === this.props.href
+    );
+  }
 
   render = () => {
     const {children, other, embeded, href} = this.props;

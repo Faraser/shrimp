@@ -1,14 +1,14 @@
 import React, {PropTypes} from 'react';
-import {Map, List} from 'immutable';
+import Immutable, {Map, List} from 'immutable';
 import cx from 'classnames';
 import './styles.scss';
-import moment from 'moment';
 import Linkify from 'react-linkify';
 import Textarea from 'react-textarea-autosize';
 import {M} from '../../../constants';
 import Embedly from 'components/Embedly';
 import {Link} from 'react-router';
 import ImagePreviews from 'components/ImagePreviews';
+import MessageDate from 'components/MessageDate';
 
 export default class Message extends React.Component {
 
@@ -31,7 +31,6 @@ export default class Message extends React.Component {
     super(props);
     this.messageMaxLength = M.MESSAGE_MAX_LENGTH;
     this.state = {
-      date: null,
       isEdit: false,
       editorHeight: 0,
       editorWidth: 0,
@@ -41,25 +40,24 @@ export default class Message extends React.Component {
   }
 
 
-  componentDidMount = () => {
-    this.updateTime(this.props.timestamp);
-    this.timer = setInterval(()=> {
-      this.updateTime(this.props.timestamp);
-    }, 5000);
-  };
-
-
-  componentWillUnmount = () => {
-    clearInterval(this.timer);
-  };
-
-  updateTime = (timestamp) => {
-    const date = moment.duration(moment().diff(moment(timestamp))).humanize();
-    this.setState({
-      date: date,
-    });
-  };
-
+  shouldComponentUpdate(nextProps, nextState) {
+    return !(
+      Immutable.is(nextProps.sender, this.props.sender) &&
+      Immutable.is(nextProps.images, this.props.images) &&
+      Immutable.is(nextProps.text, this.props.text) &&
+      Immutable.is(nextProps.timestamp, this.props.timestamp) &&
+      Immutable.is(nextProps.edited, this.props.edited) &&
+      Immutable.is(nextProps.currentUserId, this.props.currentUserId) &&
+      Immutable.is(nextProps.messageId, this.props.messageId) &&
+      Immutable.is(nextProps.nextMessageIsMain, this.props.nextMessageIsMain) &&
+      Immutable.is(nextProps.embeded, this.props.embeded) &&
+        nextState.isEdit === this.state.isEdit &&
+        nextState.editorHeight === this.state.editorHeight &&
+        nextState.editorWidth === this.state.editorWidth &&
+        nextState.editorValue === this.state.editorValue &&
+        nextState.editorImages === this.state.editorImages
+    );
+  }
 
   editStart = () => {
     const textCloud = window.getComputedStyle(this.refs.text);
@@ -140,7 +138,18 @@ export default class Message extends React.Component {
 
 
   render() {
-    const {sender, text, currentUserId, senderRepeated, nextMessageIsMain, edited, images, messageId, embeded} = this.props;
+    const {
+      sender,
+      text,
+      currentUserId,
+      senderRepeated,
+      nextMessageIsMain,
+      edited,
+      images,
+      messageId,
+      embeded,
+      timestamp,
+      } = this.props;
     const isSelfMessage = sender.get('id') === currentUserId;
     const userName = (() => {
       if (isSelfMessage || senderRepeated) return null;
@@ -181,7 +190,6 @@ export default class Message extends React.Component {
                 value={this.state.editorValue}
                 onKeyDown={this.editorKeyDown}
                 onChange={this.editorChange}
-                // onBlur={this.cancelEdit}
                 className='message__editor'
                 ref='editor'
                 minRows={2}
@@ -204,10 +212,12 @@ export default class Message extends React.Component {
               </div>
             </div>
           </div>
-          <div
-            className='message__date'
+          <MessageDate
+            edited={edited}
+            timestamp={timestamp}
             hidden={this.state.isEdit}
-            >{edited ? 'edited ' + this.state.date + ' ago' : this.state.date + ' ago' }</div>
+            className={'message__date'}
+            />
         </div>
       </li>
     );
