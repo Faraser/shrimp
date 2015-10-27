@@ -117,7 +117,7 @@ export default function startSocketServer(http) {
 
     socket.on(CS.CHANGE_USER_INFO, data => {
       setUserInfo(socket.sessionId, data, (userData) => {
-        socket.emit(SC.CHANGE_USER_INFO, {user: userData});
+        io.sockets.emit(SC.CHANGE_USER_INFO, {user: userData});
       });
     });
 

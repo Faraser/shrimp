@@ -22,18 +22,31 @@ export default class UserInfo extends React.Component {
     return (
       <div className='user-info'>
         <PopUp className='user-info__window'>
+          <div className='user-info__header'>Information</div>
           <div className='user-info__back'>
             <img className='user-info__avatar' src={user.get('avatar')} />
-            <div>{user.get('name')}</div>
-            <div>{user.get('fullName')}</div>
-            <div>{user.get('email')}</div>
-            <div>{user.get('country')}</div>
-            <div>{user.get('city')}</div>
-            <div>{user.get('age')}</div>
-            <div>{user.get('info')}</div>
+            <div className='user-info__name'>
+              {user.get('name')}
+            </div>
+            <div className='user-info__fullname'>
+              Full name: {user.get('fullName')}
+            </div>
+            <div className='user-info__email'>
+              <span>Email: {user.get('email')}</span>
+            </div>
+            <div className='user-info__country'>
+              Country: {user.get('country')}
+            </div>
+            <div className='user-info__city'>
+              City: {user.get('city')}
+            </div>
+            <div className='user-info__age'>
+              Age: {user.get('age')}
+            </div>
+            <div className='user-info__info'>{user.get('info')}</div>
           </div>
         </PopUp>
-        <Link to='/'>
+        <Link to='/'>_
           <div className='user-info__overlay'/>
         </Link>
       </div>

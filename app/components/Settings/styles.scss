@@ -1,8 +1,9 @@
 @import '~styles/variables.scss';
+@import '~styles/mixins.scss';
 
 .settings {
   &__form {
-    padding: 40px 75px;
+    padding: 40px 50px;
   }
   &__info-message {
     margin-bottom: 10px;
@@ -30,6 +31,7 @@
     &_age {
       width: 20%;
       margin-left: 5%;
+      padding-right: 5px;
     }
 
     &_about {
@@ -49,6 +51,12 @@
       font-size: 16px;
       line-height: 16px;
 
+      @include placeholder {
+        color: $c-input_placeholder;
+
+        font-size: 20px;
+      }
+
       &:focus {
         border: 1px solid $c-input_focus;
         box-shadow: 0 0 5px transparentize($c-input_focus, .5);
@@ -65,7 +73,7 @@
     line-height: 60px;
   }
   &__window {
-    $width: 500px;
+    $width: 480px;
     $height: 600px;
 
     position: absolute;

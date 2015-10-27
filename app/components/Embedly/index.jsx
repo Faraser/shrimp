@@ -17,6 +17,7 @@ export default class Embedly extends React.Component {
 
 
   render = () => {
+    console.log(this.props);
     const {children, other, embeded} = this.props;
     const url = embeded ? embeded.find(item => item.get('text') === children) : null;
     if (!url) {

@@ -39,14 +39,9 @@ export default class PeopleItem extends React.Component {
     }
   }
 
-  openUserInfo = () => {
-    console.log('open');
-  }
-
 
   render() {
     const {isCurrent, item, lastMessage, isOnline} = this.props;
-    window.item = item;
     // Don't show unread count for current channel
     const unreadCount = this.props.isCurrent || this.props.unreadCount === 0 ? null : this.props.unreadCount;
     return (
@@ -57,18 +52,18 @@ export default class PeopleItem extends React.Component {
         })}
         onClick={this.setChannel}
       >
+
         <div className='person__name'>{item.get('name')}</div>
         <div className='person__last-message'>
           {lastMessage ? lastMessage.get('text') : '🙊'}
         </div>
-
-        <Link to={`/users/${item.get('id')}`}>
-          <button onClick={this.openUserInfo}>info</button>
-        </Link>
         <UnreadCounter
           className='person__unread-counter'
           count={unreadCount}
         />
+        <Link to={`/users/${item.get('id')}`}>
+          <img className='person__avatar' src={item.get('avatar')} />
+        </Link>
       </div>
     );
   }

@@ -8,7 +8,7 @@ export function users(state = EMPTY_LIST, action) {
   case A.INIT:
     return fromJS(action.payload.users);
   case A.CHANGE_USER_INFO:
-    const index = state.map(item => item.get('id')).indexOf(action.payload.user.id);
+    const index = state.findIndex(item => item.get('id') === action.payload.user.id);
     return state.set(index, fromJS(action.payload.user));
   case A.JOIN_USER:
     const joinedUserIndex = state.findIndex(item => item.get('id') === action.payload.user.id);

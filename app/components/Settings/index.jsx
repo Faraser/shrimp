@@ -236,7 +236,7 @@ export default class Settings extends React.Component {
               value={this.state.age}
               type='number'
               name='age'
-              placeholder='age'
+              placeholder='Age'
               min='1'
               max='99'
               onChange={this.handleChange}
@@ -247,7 +247,7 @@ export default class Settings extends React.Component {
               })}
               value={this.state.country}
               name='country'
-              placeholder='city'
+              placeholder='Country'
               onChange={this.handleChange}
               />
             <Input
@@ -256,7 +256,7 @@ export default class Settings extends React.Component {
               })}
               value={this.state.city}
               name='city'
-              placeholder='city'
+              placeholder='City'
               onChange={this.handleChange}
               />
             <textarea
@@ -265,7 +265,8 @@ export default class Settings extends React.Component {
               })}
               value={this.state.about}
               name='about'
-              placeholder='about'
+              placeholder='About self'
+              maxLength='300'
               onChange={this.handleChange}
               />
             <Button
