@@ -29,14 +29,14 @@ export default class UserInfo extends React.Component {
               <dt className='user-info__field-name'>Nickname:</dt>
               <dd className='user-info__field-value'>{user.get('name')}</dd>
             </dl>
-            <dl hidden={!user.get('fullName')}>
-              <dt className='user-info__field-name'>Full name:</dt>
-              <dd className='user-info__field-value'>{user.get('fullName')}</dd>
+            <dl hidden={!user.get('email')}>
+              <dt className='user-info__field-name'>Email:</dt>
+              <dd className='user-info__field-value'>{user.get('email')}</dd>
             </dl>
             <br/>
-            <dl hidden={!user.get('email')}>
-              <dt className='user-info__field-name user-info__field-name_left'>Email:</dt>
-              <dd className='user-info__field-value user-info__field-value_left'>{user.get('email')}</dd>
+            <dl hidden={!user.get('fullName')}>
+              <dt className='user-info__field-name user-info__field-name_left'>Full name:</dt>
+              <dd className='user-info__field-value user-info__field-value_left'>{user.get('fullName')}</dd>
             </dl>
             <dl hidden={!user.get('country')}>
               <dt className='user-info__field-name user-info__field-name_left'>Country:</dt>

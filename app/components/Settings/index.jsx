@@ -11,6 +11,7 @@ import Tab from 'components/Tab';
 import InfoMessage from 'components/InfoMessage';
 import Input from 'components/Input';
 import Button from 'components/Button';
+import {M} from '../../../constants';
 import './styles.scss';
 
 
@@ -208,7 +209,8 @@ export default class Settings extends React.Component {
               value={this.state.email}
               name='email'
               placeholder='Email'
-              onChange={this.handleChange}
+              onChange={this.emailChange}
+              maxLength={M.SETTINGS_EMAIL_MAX_LENGTH}
             />
             <Input
               className={cx('settings__input', {
@@ -217,7 +219,8 @@ export default class Settings extends React.Component {
               value={this.state.name}
               name='name'
               placeholder='Name'
-              onChange={this.handleChange}
+              onChange={this.nameChange}
+              maxLength={M.SETTINGS_NAME_MAX_LENGTH}
             />
             <Input
               className={cx('settings__input', 'settings__input_fullname')}
@@ -225,6 +228,7 @@ export default class Settings extends React.Component {
               name='fullName'
               placeholder='Full Name'
               onChange={this.handleChange}
+              maxLength={M.SETTINGS_FULLNAME_MAX_LENGTH}
               />
             <Input
               className={cx('settings__input', 'settings__input_age')}
@@ -242,6 +246,7 @@ export default class Settings extends React.Component {
               name='country'
               placeholder='Country'
               onChange={this.handleChange}
+              maxLength={M.SETTINGS_COUNTRY_MAX_LENGTH}
               />
             <Input
               className={cx('settings__input', ' settings__input_city')}
@@ -249,13 +254,14 @@ export default class Settings extends React.Component {
               name='city'
               placeholder='City'
               onChange={this.handleChange}
+              maxLength={M.SETTINGS_CITY_MAX_LENGTH}
               />
             <textarea
               className={cx('settings__input', ' settings__input_about')}
               value={this.state.about}
               name='about'
               placeholder='About self'
-              maxLength='300'
+              maxLength={M.SETTINGS_INFO_MAX_LENGTH}
               onChange={this.handleChange}
               />
             <Button
