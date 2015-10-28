@@ -10,6 +10,7 @@ import Embedly from 'components/Embedly';
 import {Link} from 'react-router';
 import ImagePreviews from 'components/ImagePreviews';
 import MessageDate from 'components/MessageDate';
+import Dropzone from 'react-dropzone';
 
 export default class Message extends React.Component {
 
@@ -67,6 +68,26 @@ export default class Message extends React.Component {
       editor.setSelectionRange(this.state.editorValue.length, this.state.editorValue.length);
       editor.focus();
     }
+  };
+
+
+  onDrop = (files) => {
+    const data = new FormData();
+    files.map(file => data.append('images', file));
+    fetch('/upload', {
+      method: 'post',
+      body: data,
+    })
+      .then(res => res.json())
+      .then(res => this.setState({
+        editorImages: this.state.editorImages.concat(res.paths),
+      }));
+  };
+
+
+  openUpload = (e) => {
+    e.preventDefault();
+    this.refs.dropzone.open();
   };
 
 
@@ -197,21 +218,29 @@ export default class Message extends React.Component {
               </div>
             </div>
             <div hidden={!this.state.isEdit}>
-              <Textarea
-                value={this.state.editorValue}
-                onKeyDown={this.editorKeyDown}
-                onChange={this.editorChange}
-                className='message__editor'
-                ref='editor'
-                minRows={2}
-                maxRows={10}
-                style={{width: this.state.editorWidth, height: this.state.editorHeight}}
-              />
-              <ImagePreviews
-                className='message__preview-image'
-                links={this.state.editorImages}
-                remove={this.removeImage}
+              <Dropzone disableClick onDrop={this.onDrop} className='message__dropzone' ref='dropzone'>
+                <Textarea
+                  value={this.state.editorValue}
+                  onKeyDown={this.editorKeyDown}
+                  onChange={this.editorChange}
+                  className='message__editor'
+                  ref='editor'
+                  minRows={2}
+                  maxRows={10}
+                  style={{width: this.state.editorWidth, height: this.state.editorHeight}}
                 />
+                <ImagePreviews
+                  className='message__preview-image'
+                  links={this.state.editorImages}
+                  remove={this.removeImage}
+                  />
+                <div
+                  type='button'
+                  onClick={this.openUpload}
+                  className='message__upload-button'
+                  >
+                </div>
+              </Dropzone>
               <div
                 className='message__save-btn'
                 onClick={this.editEnd}
