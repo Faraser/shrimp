@@ -33,6 +33,7 @@ export default class MessageComposer extends React.Component {
       typing: false,
       paths: List(),
       files: List(),
+      isDrag: false,
     };
   }
 
@@ -41,7 +42,8 @@ export default class MessageComposer extends React.Component {
       Immutable.is(nextProps.local, this.props.local) &&
       Immutable.is(nextProps.typing, this.props.typing) &&
       Immutable.is(nextState.files, this.state.files) &&
-      Immutable.is(nextState.text, this.state.text)
+        nextState.text === this.state.text &&
+        nextState.isDrag === this.state.isDrag
     );
   }
 
@@ -52,6 +54,7 @@ export default class MessageComposer extends React.Component {
   };
 
   onDrop = (files) => {
+    this.setState({isDrag: false});
     const data = new FormData();
     files.map(file => data.append('images', file));
     fetch('/upload', {
@@ -65,6 +68,13 @@ export default class MessageComposer extends React.Component {
       }));
   };
 
+  onDragEnter = () => {
+    this.setState({isDrag: true});
+  };
+
+  onDragLeave = () => {
+    this.setState({isDrag: false});
+  };
 
   sendMessage = () => {
     const text = this.state.text.trim();
@@ -144,10 +154,15 @@ export default class MessageComposer extends React.Component {
 
     return (
       <div className='composer' ref='composer'>
-        <Dropzone onDrop={this.onDrop} disableClick className='composer__dropzone' ref='dropzone'>
+        <Dropzone
+          onDrop={this.onDrop}
+          onDragEnter={this.onDragEnter}
+          onDragLeave={this.onDragLeave}
+          disableClick
+          className='composer__dropzone' ref='dropzone'>
           <Typing typing={typing}/>
 
-          <div className='composer__sender'>
+          <div className={cx('composer__sender', {'composer__sender_drag-on': this.state.isDrag})}>
             <Textarea
               ref='textarea'
               value={this.state.text}

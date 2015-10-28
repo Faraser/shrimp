@@ -39,6 +39,10 @@
     border: 1px solid $с-composer-sender_border;
     border-radius: 5px;
     background-color: $с-composer-sender_bg;
+
+    &_drag-on {
+      border-color: $c-blue;
+    }
   }
 
   &__send-button {
