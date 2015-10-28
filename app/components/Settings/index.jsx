@@ -88,7 +88,9 @@ export default class Settings extends React.Component {
   }
 
   shouldComponentUpdate(nextProps) {
-    if (this.props.users.size > 0 && !Immutable.is(nextProps.users, this.props.users)) {
+    const currentUser = this.props.users.find(item => item.get('id') === this.props.local.get('userId'));
+    const newCurrentUser = nextProps.users.find(item => item.get('id') === this.props.local.get('userId'));
+    if (this.props.users.size > 0 && !Immutable.is(currentUser, newCurrentUser)) {
       nextProps.history.pushState(null, '/');
     }
 

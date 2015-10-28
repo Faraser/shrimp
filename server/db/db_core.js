@@ -161,7 +161,7 @@ export function setUserInfo(sessionId, data, callback) {
     email: data.email,
     name: data.name,
     fullName: data.fullName,
-    age: data.age,
+    age: data.age ? data.age : null,
     country: data.country,
     city: data.city,
     info: data.info,
