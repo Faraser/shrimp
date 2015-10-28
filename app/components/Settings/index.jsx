@@ -143,15 +143,14 @@ export default class Settings extends React.Component {
       });
     }
 
-
     const changedData = {
       email: this.state.email,
       name: this.state.name,
-      fullName: this.state.fullName,
-      city: this.state.city,
-      country: this.state.country,
+      fullName: this.state.fullName ? this.state.fullName.trim() : null,
+      city: this.state.city ? this.state.city.trim() : null,
+      country: this.state.country ? this.state.country.trim() : null,
       age: this.state.age,
-      info: this.state.about,
+      info: this.state.about ? this.state.about.trim() : null,
     };
 
 
