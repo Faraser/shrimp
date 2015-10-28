@@ -180,7 +180,7 @@ export default class MessageComposer extends React.Component {
             </div>
             <button
               type='button'
-              onClick={this.sendMessage} s
+              onClick={this.sendMessage}
               className='composer__send-button'
               >Send
             </button>
