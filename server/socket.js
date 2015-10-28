@@ -81,6 +81,13 @@ export default function startSocketServer(http) {
         Message.edit(data, (err, result) => {
           const channelId = result.channelId.toString();
           io.to(channelId).emit(SC.UPDATE_MESSAGE, result.toObject());
+          parseUrlsInMessage(result).then(embeded => {
+            if (embeded !== null) {
+              Message.addEmbeded(result.id, embeded, (error, message) => {
+                io.to(channelId).emit(SC.UPDATE_MESSAGE, message.toObject());
+              });
+            }
+          });
         });
       });
     });
