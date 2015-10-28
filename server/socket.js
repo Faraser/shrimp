@@ -80,7 +80,7 @@ export default function startSocketServer(http) {
       checkEditPermission(socket.sessionId, data.messageId).then(() => {
         Message.edit(data, (err, result) => {
           const channelId = result.channelId.toString();
-          io.to(channelId).emit(SC.EDIT_MESSAGE, result.toObject());
+          io.to(channelId).emit(SC.UPDATE_MESSAGE, result.toObject());
         });
       });
     });

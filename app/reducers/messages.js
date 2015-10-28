@@ -9,12 +9,7 @@ export function messages(state = EMPTY_LIST, action = null) {
     return fromJS(action.payload.messages);
   case A.ADD_MESSAGE:
     return state.push(action.message);
-  case A.ADD_IMAGE_URL:
-    const index = state.findIndex(item => item.get('id') === action.payload.messageId);
-    const mes = state.get(index);
-    const newMessage = mes.set('images', mes.get('images').push(action.payload.url));
-    return state.set(index, newMessage);
-  case A.EDIT_MESSAGE:
+  case A.UPDATE_MESSAGE:
     const i = state.findIndex(item => item.get('id') === action.payload.get('id'));
     if (i > -1) {
       return state.set(i, action.payload);

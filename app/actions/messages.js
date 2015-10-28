@@ -38,9 +38,9 @@ export function sendEditedMessage(data) {
   };
 }
 
-export function setEditedMessage(data) {
+export function updateMessage(data) {
   return {
-    type: A.EDIT_MESSAGE,
+    type: A.UPDATE_MESSAGE,
     payload: data,
   };
 }
