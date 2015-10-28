@@ -165,6 +165,7 @@ export function setUserInfo(sessionId, data, callback) {
     country: data.country,
     city: data.city,
     info: data.info,
+    lastChanged: new Date(),
   }, { new: true }, (error, changedUser) => {
     if (error) debug(error);
     callback(changedUser.toObject());

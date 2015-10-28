@@ -12,6 +12,7 @@ const user = new mongoose.Schema({
   country: String,
   city: String,
   avatar: String,
+  lastChanged: { type: Date, default: Date.now },
   passwordHash: {
     type: String,
     select: false,
