@@ -69,12 +69,7 @@ export default function startSocketServer(http) {
           io.to(data.channelId).emit(SC.ADD_MESSAGE, result);
           return Promise.all([parseUrlsInMessage(result), Promise.resolve(result)]);
         })
-        .then(([embeded, result]) => {
-          if (embeded !== null) {
-            return Message.addEmbeded(result.id, embeded);
-          }
-          return Promise.reject('Embed not found');
-        })
+        .then(([embeded, result]) => Message.addEmbeded(result.id, embeded))
         .then(result => io.to(result.channelId).emit(SC.UPDATE_MESSAGE, result))
         .catch(err => console.log(err));
     });
@@ -87,12 +82,7 @@ export default function startSocketServer(http) {
           io.to(result.channelId).emit(SC.UPDATE_MESSAGE, result);
           return parseUrlsInMessage(result);
         })
-        .then(embeded => {
-          if (embeded !== null) {
-            return Message.addEmbeded(data.messageId, embeded);
-          }
-          return Promise.reject('Embed not found');
-        })
+        .then(embeded => Message.addEmbeded(data.messageId, embeded))
         .then(result => io.to(result.channelId).emit(SC.UPDATE_MESSAGE, result))
         .catch(err => console.log(err));
     });

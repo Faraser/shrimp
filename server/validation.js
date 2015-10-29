@@ -37,9 +37,9 @@ export function checkAddPermission(sessionId, senderId) {
 export function parseUrlsInMessage(message) {
   const link = new Linkify();
   const matches = link.match(message.text);
-  return new Promise((resolve) => {
+  return new Promise((resolve, reject) => {
     if (matches === null) {
-      resolve(null);
+      reject('Urls not found');
     }
     const requests = matches.map(match => fetch(`http://api.embed.ly/1/oembed?url=${match.url}&key=${M.API_KEY}`));
     Promise.all(requests)
@@ -60,7 +60,7 @@ export function parseUrlsInMessage(message) {
         });
         resolve(result);
       })
-      .catch(err => console.log(err));
+      .catch(err => reject(err));
   });
 }
 
