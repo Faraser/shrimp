@@ -30,8 +30,8 @@ message.set('toObject', getToObjectOptions());
 
 message.statics.getForChannels = function getForChannels(channelIds) { return this.find({ channelId: { $in: channelIds } }); };
 
-message.statics.add = function add(data, cb) {
-  return new this(data).save(cb);
+message.statics.add = function add(data) {
+  return new this(data).save().then(result => result.toObject());
 };
 
 message.statics.edit = function edit(data) {
@@ -64,7 +64,7 @@ message.statics.addEmbeded = function addEmbeded(id, data) {
   return new Promise((resolve, reject) => {
     this.findOneAndUpdate({_id: new ObjectId(id)}, {
       $addToSet: {
-        images: data.filter(item => item.type === 'photo').map(item => item.url), // TODO: fix unique images
+        images: {$each: data.filter(item => item.type === 'photo').map(item => item.url)},
       },
       embeded: data.filter(item => item.type !== 'photo'),
     }, {new: true})

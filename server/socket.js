@@ -6,7 +6,7 @@ import getChannelModel from './models/channel';
 import getUserModel from './models/user';
 import {SC, CS} from '../constants';
 import {checkSessionId, setUserInfo, joinToChannel, setFavoriteChannel, loadChannelHistory} from './db/db_core.js';
-import {checkEditPermission, parseUrlsInMessage} from './validation';
+import {checkEditPermission, parseUrlsInMessage, checkAddPermission} from './validation';
 // const debug = require('debug')('shrimp:server');
 const Message = getMessageModel();
 const Channel = getChannelModel();
@@ -63,41 +63,37 @@ export default function startSocketServer(http) {
     });
 
     socket.on(CS.ADD_MESSAGE, data => {
-      Message.add(data, (err, result) => {
-        io.to(data.channelId).emit(SC.ADD_MESSAGE, result.toObject());
-        console.log('result', result, data.channelId);
-        parseUrlsInMessage(result)
-          .then(embeded => {
-            if (embeded !== null) {
-              return Message.addEmbeded(result.id, embeded);
-            }
-            return Promise.reject('Not found');
-          })
-          .then(message => io.to(data.channelId).emit(SC.UPDATE_MESSAGE, message))
-          .catch(error => console.log(error));
-      });
+      checkAddPermission(socket.sessionId, data.senderId)
+        .then(() => Message.add(data))
+        .then(result => {
+          io.to(data.channelId).emit(SC.ADD_MESSAGE, result);
+          return Promise.all([parseUrlsInMessage(result), Promise.resolve(result)]);
+        })
+        .then(([embeded, result]) => {
+          if (embeded !== null) {
+            return Message.addEmbeded(result.id, embeded);
+          }
+          return Promise.reject('Embed not found');
+        })
+        .then(result => io.to(result.channelId).emit(SC.UPDATE_MESSAGE, result))
+        .catch(err => console.log(err));
     });
 
 
     socket.on(CS.EDIT_MESSAGE, data => {
-      console.log('data', data);
       checkEditPermission(socket.sessionId, data.messageId)
         .then(() => Message.edit(data))
         .then(result => {
           io.to(result.channelId).emit(SC.UPDATE_MESSAGE, result);
-          console.log('result', result);
           return parseUrlsInMessage(result);
         })
         .then(embeded => {
           if (embeded !== null) {
-            console.log('embeded', embeded);
             return Message.addEmbeded(data.messageId, embeded);
           }
           return Promise.reject('Embed not found');
         })
-        .then(result => {
-          io.to(result.channelId).emit(SC.UPDATE_MESSAGE, result);
-        })
+        .then(result => io.to(result.channelId).emit(SC.UPDATE_MESSAGE, result))
         .catch(err => console.log(err));
     });
 

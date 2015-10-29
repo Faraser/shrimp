@@ -21,6 +21,19 @@ export function checkEditPermission(sessionId, messageId) {
 }
 
 
+export function checkAddPermission(sessionId, senderId) {
+  return new Promise((resolve, reject) => {
+    User.getBySessionId(sessionId).then((user) => {
+      if (user.id.toString() === senderId) {
+        resolve();
+      } else {
+        reject(new Error('Permission denied'));
+      }
+    });
+  });
+}
+
+
 export function parseUrlsInMessage(message) {
   const link = new Linkify();
   const matches = link.match(message.text);
