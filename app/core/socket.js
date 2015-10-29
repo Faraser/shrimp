@@ -18,6 +18,7 @@ export function socketClient(type = null, socketData = null) {
 
 
     socket.on(SC.UPDATE_MESSAGE, (data) => {
+      console.log('UPDATE_MESSAGE', data);
       store.dispatch(updateMessage(fromJS(data)));
     });
 

@@ -156,19 +156,20 @@ export function setFavoriteChannel(sessionId, data) {
 }
 
 
-export function setUserInfo(sessionId, data, callback) {
-  return User.findOneAndUpdate({ sessionId: sessionId }, {
-    email: data.email,
-    name: data.name,
-    fullName: data.fullName,
-    age: data.age ? data.age : null,
-    country: data.country,
-    city: data.city,
-    info: data.info,
-    lastChanged: new Date(),
-  }, { new: true }, (error, changedUser) => {
-    if (error) debug(error);
-    callback(changedUser.toObject());
+export function setUserInfo(sessionId, data) {
+  return new Promise((resolve, reject) => {
+    User.findOneAndUpdate({sessionId: sessionId}, {
+      email: data.email,
+      name: data.name,
+      fullName: data.fullName,
+      age: data.age ? data.age : null,
+      country: data.country,
+      city: data.city,
+      info: data.info,
+      lastChanged: new Date(),
+    }, {new: true})
+      .then(changedObject => resolve(changedObject.toObject()))
+      .catch(err => reject(err));
   });
 }
 

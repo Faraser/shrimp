@@ -34,13 +34,16 @@ message.statics.add = function add(data, cb) {
   return new this(data).save(cb);
 };
 
-message.statics.edit = function edit(data, cb) {
-  this.findOne( {_id: new ObjectId(data.messageId)}, (err, m) => {
-    m.text = data.text;
-    m.timestamp = Date.now();
-    m.edited = true;
-    m.images = data.images;
-    m.save(cb);
+message.statics.edit = function edit(data) {
+  return new Promise((resolve, reject) => {
+    this.findOneAndUpdate( {_id: new ObjectId(data.messageId)}, {
+      text: data.text,
+      timestamp: Date.now(),
+      edited: true,
+      images: data.images,
+    }, {new: true})
+      .then(editedMessage => resolve(editedMessage.toObject()))
+      .catch(err => reject(err));
   });
 };
 
@@ -56,16 +59,17 @@ message.statics.getById = function getById(id) {
   });
 };
 
-message.statics.addEmbeded = function addEmbeded(id, data, cb) {
-  this.findOne( {_id: new ObjectId(id)}, (err, m) => {
-    data
-      .filter(item => item.type === 'photo')
-      .map(item => item.url)
-      .map(item => m.images.push(item));
-    data
-      .filter(item => item.type !== 'photo')
-      .map(item => m.embeded.push(item));
-    m.save(cb);
+
+message.statics.addEmbeded = function addEmbeded(id, data) {
+  return new Promise((resolve, reject) => {
+    this.findOneAndUpdate({_id: new ObjectId(id)}, {
+      $addToSet: {
+        images: data.filter(item => item.type === 'photo').map(item => item.url), // TODO: fix unique images
+      },
+      embeded: data.filter(item => item.type !== 'photo'),
+    }, {new: true})
+      .then(result => resolve(result.toObject()))
+      .catch(err => reject(err));
   });
 };
 

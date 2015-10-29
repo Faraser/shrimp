@@ -64,32 +64,41 @@ export default function startSocketServer(http) {
 
     socket.on(CS.ADD_MESSAGE, data => {
       Message.add(data, (err, result) => {
-        parseUrlsInMessage(result).then(embeded => {
-          if (embeded !== null) {
-            Message.addEmbeded(result.id, embeded, (error, message) => {
-              io.to(data.channelId).emit(SC.UPDATE_MESSAGE, message.toObject());
-            });
-          }
-        });
         io.to(data.channelId).emit(SC.ADD_MESSAGE, result.toObject());
+        console.log('result', result, data.channelId);
+        parseUrlsInMessage(result)
+          .then(embeded => {
+            if (embeded !== null) {
+              return Message.addEmbeded(result.id, embeded);
+            }
+            return Promise.reject('Not found');
+          })
+          .then(message => io.to(data.channelId).emit(SC.UPDATE_MESSAGE, message))
+          .catch(error => console.log(error));
       });
     });
 
 
     socket.on(CS.EDIT_MESSAGE, data => {
-      checkEditPermission(socket.sessionId, data.messageId).then(() => {
-        Message.edit(data, (err, result) => {
-          const channelId = result.channelId.toString();
-          io.to(channelId).emit(SC.UPDATE_MESSAGE, result.toObject());
-          parseUrlsInMessage(result).then(embeded => {
-            if (embeded !== null) {
-              Message.addEmbeded(result.id, embeded, (error, message) => {
-                io.to(channelId).emit(SC.UPDATE_MESSAGE, message.toObject());
-              });
-            }
-          });
-        });
-      });
+      console.log('data', data);
+      checkEditPermission(socket.sessionId, data.messageId)
+        .then(() => Message.edit(data))
+        .then(result => {
+          io.to(result.channelId).emit(SC.UPDATE_MESSAGE, result);
+          console.log('result', result);
+          return parseUrlsInMessage(result);
+        })
+        .then(embeded => {
+          if (embeded !== null) {
+            console.log('embeded', embeded);
+            return Message.addEmbeded(data.messageId, embeded);
+          }
+          return Promise.reject('Embed not found');
+        })
+        .then(result => {
+          io.to(result.channelId).emit(SC.UPDATE_MESSAGE, result);
+        })
+        .catch(err => console.log(err));
     });
 
 
@@ -123,9 +132,9 @@ export default function startSocketServer(http) {
 
 
     socket.on(CS.CHANGE_USER_INFO, data => {
-      setUserInfo(socket.sessionId, data, (userData) => {
-        io.sockets.emit(SC.CHANGE_USER_INFO, {user: userData});
-      });
+      setUserInfo(socket.sessionId, data)
+        .then(userData => io.sockets.emit(SC.CHANGE_USER_INFO, {user: userData}))
+        .catch(err => console.log(err));
     });
 
 
